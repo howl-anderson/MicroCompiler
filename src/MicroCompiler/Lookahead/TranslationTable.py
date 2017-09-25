@@ -1,0 +1,2 @@
+class TranslationTable(dict):
+    pass

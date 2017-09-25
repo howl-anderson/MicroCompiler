@@ -1,0 +1,27 @@
+terminals: [+, -, x, /, (, ), name, num]
+non-terminals: [Goal, Expr, Expr', Term, Term', Factor]
+eof-marker: <EOF>
+error-marker: --
+start-symbol: Goal
+
+productions:
+  0: {Goal: [Expr]}
+  1: {Expr: [Term, Expr']}
+  2: {Expr': [+, Term, Expr']}
+  3: {Expr': [-, Term, Expr']}
+  4: {Expr': []}
+  5: {Term: [Factor, Term']}
+  6: {Term': [x, Factor, Term']}
+  7: {Term': [/, Factor, Term']}
+  8: {Term': []}
+  9: {Factor: [(, Expr, )]}
+  10: {Factor: [num]}
+  11: {Factor: [name]}
+
+table:
+  Goal: {+: --, -: --, x: --, /: --, (: 0, ): --, name: 0, num: 0, <EOF>: --}
+  Expr: {+: --, -: --, x: --, /: --, (: 1, ): --, name: 1, num: 1, <EOF>: --}
+  Expr': {+: 2, -: 3, x: --, /: --, (: 0, ): 4, name: --, num: --, <EOF>: 4}
+  Term: {+: --, -: --, x: --, /: --, (: 5, ): --, name: 5, num: 5, <EOF>: --}
+  Term': {+: 8, -: 8, x: 6, /: 7, (: --, ): 8, name: --, num: --, <EOF>: 8}
+  Factor: {+: --, -: --, x: --, /: --, (: 9, ): --, name: 11, num: 10, <EOF>: --}
