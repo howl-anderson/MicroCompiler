@@ -14,5 +14,5 @@
 # 如何使用
 TODO (短时间内，暂时没有计划完成这个part)
 
-# Credits
+# Acknowledge & Credits
 http://hackingoff.com/compilers
