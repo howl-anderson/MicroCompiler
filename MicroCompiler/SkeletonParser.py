@@ -11,7 +11,8 @@ class SkeletonParser:
         self.lexeme_list = lexeme_list
         self.lexeme_index = 0
 
-        definition = yaml.load(open(definition_file).read())
+        with open(definition_file) as fd:
+            definition = yaml.load(fd.read())
 
         self.start_symbol = definition["start-symbol"]
         self.error_marker = definition["error-marker"]
