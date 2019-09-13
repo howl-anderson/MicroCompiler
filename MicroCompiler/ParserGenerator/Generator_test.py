@@ -1,7 +1,7 @@
 import unittest
 import pprint
 
-from .Generator import Generator
+from MicroCompiler.ParserGenerator.Generator import Generator
 from MicroCompiler.Lookahead.NonTerminal import NonTerminal
 from MicroCompiler.Lookahead.Terminal import Terminal
 from MicroCompiler.Lookahead.Terminal import CHARACTER
