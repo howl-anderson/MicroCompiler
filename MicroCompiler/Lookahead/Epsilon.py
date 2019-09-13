@@ -1,4 +1,4 @@
-from .Terminal import Terminal
+from MicroCompiler.Lookahead.Terminal import Terminal
 
 
 class Epsilon:
@@ -7,10 +7,10 @@ class Epsilon:
 
     @property
     def value(self):
-        return 'ϵ'
+        return "ϵ"
 
     def __hash__(self):
-        return hash('ϵ')
+        return hash("ϵ")
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):

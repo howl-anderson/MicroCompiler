@@ -1,7 +1,7 @@
 import copy
 
 from MicroCompiler.Productions import Productions
-from .SymbolSet import SymbolSet
+from MicroCompiler.Lookahead.SymbolSet import SymbolSet
 
 
 class FirstSet:

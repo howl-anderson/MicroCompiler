@@ -3,8 +3,8 @@ from itertools import chain
 
 import yaml
 
-from .Lexer import Lexer
-from .Parser import Parser
+from MicroCompiler.ParserGenerator.Lexer import Lexer
+from MicroCompiler.ParserGenerator.Parser import Parser
 from MicroCompiler.Lookahead.FirstPlusSet import FirstPlusSet
 from MicroCompiler.Lookahead.EOF import EOF
 from MicroCompiler.Lookahead.Epsilon import Epsilon
@@ -26,14 +26,14 @@ class Generator:
         parser.parse()
         productions = parser.generate_production()
 
-        error_marker = '--'
+        error_marker = "--"
 
         self.structure = {
-            'terminals': [i.value for i in productions.terminals],
-            'non-terminals': [i.name for i in productions.non_terminals],
-            'eof-marker': '<EOF>',
-            'error-marker': error_marker,
-            'start-symbol': productions.start_symbol.value
+            "terminals": [i.value for i in productions.terminals],
+            "non-terminals": [i.name for i in productions.non_terminals],
+            "eof-marker": "<EOF>",
+            "error-marker": error_marker,
+            "start-symbol": productions.start_symbol.value,
         }
 
         flat_productions = []
@@ -42,9 +42,15 @@ class Generator:
             production = productions[lhs_symbol]
             for k, v in enumerate(production):
                 productions_mapping.append(frozenset({lhs_symbol.value, k}))
-                flat_productions.append({lhs_symbol.value: [i.value for i in v] if not isinstance(v[0], Epsilon) else []})
+                flat_productions.append(
+                    {
+                        lhs_symbol.value: [i.value for i in v]
+                        if not isinstance(v[0], Epsilon)
+                        else []
+                    }
+                )
 
-        self.structure['productions'] = {k: v for k, v in enumerate(flat_productions)}
+        self.structure["productions"] = {k: v for k, v in enumerate(flat_productions)}
         productions_mapping = {v: k for k, v in enumerate(productions_mapping)}
 
         fs = FirstPlusSet(productions)
@@ -62,7 +68,9 @@ class Generator:
 
                 if terminal not in first_set_plus[non_terminal]:
                     # no such translation
-                    self.translate_table[non_terminal.value][terminal.value] = error_marker
+                    self.translate_table[non_terminal.value][
+                        terminal.value
+                    ] = error_marker
 
                     continue
 
@@ -70,17 +78,21 @@ class Generator:
 
                 look_for = frozenset({non_terminal.value, inner_index})
                 if look_for not in productions_mapping:
-                    raise ValueError("Terminal {} in {} not in mapping {}".format(terminal,
-                                                                                  non_terminal,
-                                                                                  productions_mapping))
+                    raise ValueError(
+                        "Terminal {} in {} not in mapping {}".format(
+                            terminal, non_terminal, productions_mapping
+                        )
+                    )
 
-                self.translate_table[non_terminal.value][terminal.value] = productions_mapping[look_for]
+                self.translate_table[non_terminal.value][
+                    terminal.value
+                ] = productions_mapping[look_for]
 
-        self.structure['table'] = self.translate_table
+        self.structure["table"] = self.translate_table
 
         return self.structure
 
     def write_yaml(self, output_file):
-        fd = open(output_file, 'w')
+        fd = open(output_file, "w")
         yaml.dump(self.structure, fd)
         fd.close()

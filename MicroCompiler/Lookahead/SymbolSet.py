@@ -1,4 +1,4 @@
-from .Epsilon import Epsilon
+from MicroCompiler.Lookahead.Epsilon import Epsilon
 
 
 class SymbolSet(set):

@@ -2,13 +2,13 @@ import unittest
 import pprint
 
 from MicroCompiler.Productions import Productions
-from .Epsilon import Epsilon
-from .EOF import EOF
-from .FirstSet import FirstSet
-from .NonTerminal import NonTerminal
-from .Terminal import CHARACTER
-from .Terminal import Terminal
-from .SymbolSet import SymbolSet
+from MicroCompiler.Lookahead.Epsilon import Epsilon
+from MicroCompiler.Lookahead.EOF import EOF
+from MicroCompiler.Lookahead.FirstSet import FirstSet
+from MicroCompiler.Lookahead.NonTerminal import NonTerminal
+from MicroCompiler.Lookahead.Terminal import CHARACTER
+from MicroCompiler.Lookahead.Terminal import Terminal
+from MicroCompiler.Lookahead.SymbolSet import SymbolSet
 
 
 class TestFirstSet(unittest.TestCase):
@@ -19,15 +19,9 @@ class TestFirstSet(unittest.TestCase):
         plus = Terminal(CHARACTER, "+")
         minus = Terminal(CHARACTER, "-")
 
-        production = Productions({
-            statement: [
-                [expression, semicolon]
-            ],
-            expression: [
-                [plus],
-                [minus]
-            ]
-        })
+        production = Productions(
+            {statement: [[expression, semicolon]], expression: [[plus], [minus]]}
+        )
 
         production.set_start_symbol(statement)
 
@@ -43,16 +37,12 @@ class TestFirstSet(unittest.TestCase):
         plus = Terminal(CHARACTER, "+")
         minus = Terminal(CHARACTER, "-")
 
-        production = Productions({
-            statement: [
-                [expression, semicolon],
-            ],
-            expression: [
-                [plus],
-                [minus],
-                [epsilon]
-            ]
-        })
+        production = Productions(
+            {
+                statement: [[expression, semicolon]],
+                expression: [[plus], [minus], [epsilon]],
+            }
+        )
 
         production.set_start_symbol(statement)
 
@@ -106,32 +96,20 @@ class TestFirstSet(unittest.TestCase):
         close_parenthesis = Terminal(CHARACTER, ")")
         eof = EOF()
 
-        production = Productions({
-            goal: [
-                [expr],
-            ],
-            expr: [
-                [term, term_two]
-            ],
-            expr_two: [
-                [plus, term, expr_two],
-                [minus, term, expr_two],
-                [epsilon]
-            ],
-            term: [
-                [factor, term_two]
-            ],
-            term_two: [
-                [asteroid, factor, term_two],
-                [div, factor, term_two],
-                [epsilon]
-            ],
-            factor: [
-                [open_parenthesis, expr, close_parenthesis],
-                [num],
-                [name]
-            ]
-        })
+        production = Productions(
+            {
+                goal: [[expr]],
+                expr: [[term, term_two]],
+                expr_two: [[plus, term, expr_two], [minus, term, expr_two], [epsilon]],
+                term: [[factor, term_two]],
+                term_two: [
+                    [asteroid, factor, term_two],
+                    [div, factor, term_two],
+                    [epsilon],
+                ],
+                factor: [[open_parenthesis, expr, close_parenthesis], [num], [name]],
+            }
+        )
 
         production.set_start_symbol(goal)
 
@@ -155,7 +133,7 @@ class TestFirstSet(unittest.TestCase):
             factor: SymbolSet({open_parenthesis, num, name}),
             term: SymbolSet({open_parenthesis, num, name}),
             expr: SymbolSet({open_parenthesis, num, name}),
-            goal: SymbolSet({open_parenthesis, num, name})
+            goal: SymbolSet({open_parenthesis, num, name}),
         }
 
         # pprint.pprint(real_result)

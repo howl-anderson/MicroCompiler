@@ -13,13 +13,13 @@ class SkeletonParser:
 
         definition = yaml.load(open(definition_file).read())
 
-        self.start_symbol = definition['start-symbol']
-        self.error_marker = definition['error-marker']
-        self.productions = definition['productions']
-        self.table = definition['table']
-        self.terminals = definition['terminals']
-        self.non_terminals = definition['non-terminals']
-        self.eof_marker = definition['eof-marker']
+        self.start_symbol = definition["start-symbol"]
+        self.error_marker = definition["error-marker"]
+        self.productions = definition["productions"]
+        self.table = definition["table"]
+        self.terminals = definition["terminals"]
+        self.non_terminals = definition["non-terminals"]
+        self.eof_marker = definition["eof-marker"]
 
     def parse(self):
         result = False
@@ -45,12 +45,18 @@ class SkeletonParser:
 
         lookahead_symbol = self.lexeme_list[self.lexeme_index]
         if lookahead_symbol not in self.table[symbol]:
-            raise SkeletonSyntaxError("Lookahead symbol: {} not in {}".format(lookahead_symbol, self.table[symbol]))
+            raise SkeletonSyntaxError(
+                "Lookahead symbol: {} not in {}".format(
+                    lookahead_symbol, self.table[symbol]
+                )
+            )
 
         predict_indicator = self.table[symbol][lookahead_symbol]
 
         if predict_indicator == self.error_marker:
-            raise SkeletonSyntaxError("Invalid lookahead symbol: {} in {}".format(lookahead_symbol, symbol))
+            raise SkeletonSyntaxError(
+                "Invalid lookahead symbol: {} in {}".format(lookahead_symbol, symbol)
+            )
 
         if predict_indicator not in self.productions:
             raise SkeletonSyntaxError("{} not in {}")

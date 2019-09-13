@@ -2,12 +2,12 @@ import unittest
 import pprint
 
 from MicroCompiler.Productions import Productions
-from .Epsilon import Epsilon
-from .EOF import EOF
-from .FirstPlusSet import FirstPlusSet
-from .NonTerminal import NonTerminal
-from .Terminal import CHARACTER
-from .Terminal import Terminal
+from MicroCompiler.Lookahead.Epsilon import Epsilon
+from MicroCompiler.Lookahead.EOF import EOF
+from MicroCompiler.Lookahead.FirstPlusSet import FirstPlusSet
+from MicroCompiler.Lookahead.NonTerminal import NonTerminal
+from MicroCompiler.Lookahead.Terminal import CHARACTER
+from MicroCompiler.Lookahead.Terminal import Terminal
 
 
 class TestFirstPlusSet(unittest.TestCase):
@@ -18,15 +18,9 @@ class TestFirstPlusSet(unittest.TestCase):
         plus = Terminal(CHARACTER, "+")
         minus = Terminal(CHARACTER, "-")
 
-        production = Productions({
-            statement: [
-                [expression, semicolon]
-            ],
-            expression: [
-                [plus],
-                [minus]
-            ]
-        })
+        production = Productions(
+            {statement: [[expression, semicolon]], expression: [[plus], [minus]]}
+        )
 
         production.set_start_symbol(statement)
 
@@ -36,12 +30,14 @@ class TestFirstPlusSet(unittest.TestCase):
         real_result = fs.first_plus_set
 
         expect_result = {
-            NonTerminal('Expression'):
-                {Terminal(CHARACTER, '+'): 0,
-                 Terminal(CHARACTER, '-'): 1},
-            NonTerminal('Statement'):
-                {Terminal(CHARACTER, '+'): 0,
-                 Terminal(CHARACTER, '-'): 0}
+            NonTerminal("Expression"): {
+                Terminal(CHARACTER, "+"): 0,
+                Terminal(CHARACTER, "-"): 1,
+            },
+            NonTerminal("Statement"): {
+                Terminal(CHARACTER, "+"): 0,
+                Terminal(CHARACTER, "-"): 0,
+            },
         }
 
         self.assertEqual(real_result, expect_result)
@@ -54,16 +50,12 @@ class TestFirstPlusSet(unittest.TestCase):
         plus = Terminal(CHARACTER, "+")
         minus = Terminal(CHARACTER, "-")
 
-        production = Productions({
-            statement: [
-                [expression, semicolon],
-            ],
-            expression: [
-                [plus],
-                [minus],
-                [epsilon]
-            ]
-        })
+        production = Productions(
+            {
+                statement: [[expression, semicolon]],
+                expression: [[plus], [minus], [epsilon]],
+            }
+        )
 
         production.set_start_symbol(statement)
 
@@ -73,10 +65,16 @@ class TestFirstPlusSet(unittest.TestCase):
         real_result = fs.first_plus_set
 
         expect_result = {
-            NonTerminal('Statement'):
-                {Terminal(CHARACTER, '+'): 0, Terminal(CHARACTER, '-'): 0, Terminal(CHARACTER, ';'): 0},
-            NonTerminal('Expression'):
-                {Terminal(CHARACTER, '+'): 0, Terminal(CHARACTER, '-'): 1, Terminal(CHARACTER, ';'): 2}
+            NonTerminal("Statement"): {
+                Terminal(CHARACTER, "+"): 0,
+                Terminal(CHARACTER, "-"): 0,
+                Terminal(CHARACTER, ";"): 0,
+            },
+            NonTerminal("Expression"): {
+                Terminal(CHARACTER, "+"): 0,
+                Terminal(CHARACTER, "-"): 1,
+                Terminal(CHARACTER, ";"): 2,
+            },
         }
 
         self.assertEqual(real_result, expect_result)
@@ -124,32 +122,20 @@ class TestFirstPlusSet(unittest.TestCase):
         close_parenthesis = Terminal(CHARACTER, ")")
         eof = EOF()
 
-        production = Productions({
-            goal: [
-                [expr],
-            ],
-            expr: [
-                [term, expr_two]
-            ],
-            expr_two: [
-                [plus, term, expr_two],
-                [minus, term, expr_two],
-                [epsilon]
-            ],
-            term: [
-                [factor, term_two]
-            ],
-            term_two: [
-                [asteroid, factor, term_two],
-                [div, factor, term_two],
-                [epsilon]
-            ],
-            factor: [
-                [open_parenthesis, expr, close_parenthesis],
-                [num],
-                [name]
-            ]
-        })
+        production = Productions(
+            {
+                goal: [[expr]],
+                expr: [[term, expr_two]],
+                expr_two: [[plus, term, expr_two], [minus, term, expr_two], [epsilon]],
+                term: [[factor, term_two]],
+                term_two: [
+                    [asteroid, factor, term_two],
+                    [div, factor, term_two],
+                    [epsilon],
+                ],
+                factor: [[open_parenthesis, expr, close_parenthesis], [num], [name]],
+            }
+        )
 
         production.set_start_symbol(goal)
 
@@ -159,28 +145,40 @@ class TestFirstPlusSet(unittest.TestCase):
         real_result = fs.first_plus_set
 
         expect_result = {
-            NonTerminal('Goal'): {Terminal(CHARACTER, 'name'): 0,
-                                  Terminal(CHARACTER, 'num'): 0,
-                                  Terminal(CHARACTER, '('): 0},
-            NonTerminal('Expr'): {Terminal(CHARACTER, 'name'): 0,
-                                  Terminal(CHARACTER, 'num'): 0,
-                                  Terminal(CHARACTER, '('): 0},
-            NonTerminal('ExprTwo'): {EOF(): 2,
-                                     Terminal(CHARACTER, '+'): 0,
-                                     Terminal(CHARACTER, '-'): 1,
-                                     Terminal(CHARACTER, ')'): 2},
-            NonTerminal('Term'): {Terminal(CHARACTER, 'name'): 0,
-                                  Terminal(CHARACTER, 'num'): 0,
-                                  Terminal(CHARACTER, '('): 0},
-            NonTerminal('TermTwo'): {EOF(): 2,
-                                     Terminal(CHARACTER, '+'): 2,
-                                     Terminal(CHARACTER, '-'): 2,
-                                     Terminal(CHARACTER, '/'): 1,
-                                     Terminal(CHARACTER, '*'): 0,
-                                     Terminal(CHARACTER, ')'): 2},
-            NonTerminal('Factor'): {Terminal(CHARACTER, 'name'): 2,
-                                    Terminal(CHARACTER, 'num'): 1,
-                                    Terminal(CHARACTER, '('): 0}
+            NonTerminal("Goal"): {
+                Terminal(CHARACTER, "name"): 0,
+                Terminal(CHARACTER, "num"): 0,
+                Terminal(CHARACTER, "("): 0,
+            },
+            NonTerminal("Expr"): {
+                Terminal(CHARACTER, "name"): 0,
+                Terminal(CHARACTER, "num"): 0,
+                Terminal(CHARACTER, "("): 0,
+            },
+            NonTerminal("ExprTwo"): {
+                EOF(): 2,
+                Terminal(CHARACTER, "+"): 0,
+                Terminal(CHARACTER, "-"): 1,
+                Terminal(CHARACTER, ")"): 2,
+            },
+            NonTerminal("Term"): {
+                Terminal(CHARACTER, "name"): 0,
+                Terminal(CHARACTER, "num"): 0,
+                Terminal(CHARACTER, "("): 0,
+            },
+            NonTerminal("TermTwo"): {
+                EOF(): 2,
+                Terminal(CHARACTER, "+"): 2,
+                Terminal(CHARACTER, "-"): 2,
+                Terminal(CHARACTER, "/"): 1,
+                Terminal(CHARACTER, "*"): 0,
+                Terminal(CHARACTER, ")"): 2,
+            },
+            NonTerminal("Factor"): {
+                Terminal(CHARACTER, "name"): 2,
+                Terminal(CHARACTER, "num"): 1,
+                Terminal(CHARACTER, "("): 0,
+            },
         }
 
         self.assertEqual(real_result, expect_result)

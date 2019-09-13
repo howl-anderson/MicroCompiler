@@ -1,6 +1,6 @@
 import copy
 
-from .NonTerminal import NonTerminal
+from MicroCompiler.Lookahead.NonTerminal import NonTerminal
 from MicroCompiler.Productions import Productions
 from MicroCompiler.Lookahead.EOF import EOF
 from MicroCompiler.Lookahead.SymbolSet import SymbolSet

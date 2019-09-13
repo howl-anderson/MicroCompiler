@@ -11,11 +11,7 @@ class TestProduction(unittest.TestCase):
         statement = NonTerminal("Statement")
         expression = NonTerminal("Expression")
         semicolon = Terminal(CHARACTER, ";")
-        production = Productions({
-            statement: [
-                [expression, semicolon]
-            ]
-        })
+        production = Productions({statement: [[expression, semicolon]]})
 
         production.print_as_bnf()
 

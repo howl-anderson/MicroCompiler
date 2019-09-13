@@ -1,5 +1,5 @@
-from .FirstSet import FirstSet
-from .FollowSet import FollowSet
+from MicroCompiler.Lookahead.FirstSet import FirstSet
+from MicroCompiler.Lookahead.FollowSet import FollowSet
 
 
 class FirstPlusSet:
@@ -30,8 +30,12 @@ class FirstPlusSet:
                 symbol_set = self.first_set_mapping[lhs_symbol][production_index]
 
                 self.first_plus_set_mapping.setdefault(lhs_symbol, {})
-                self.first_plus_set_mapping[lhs_symbol].setdefault(production_index, set())
-                first_plus_set = self.first_plus_set_mapping[lhs_symbol][production_index]
+                self.first_plus_set_mapping[lhs_symbol].setdefault(
+                    production_index, set()
+                )
+                first_plus_set = self.first_plus_set_mapping[lhs_symbol][
+                    production_index
+                ]
                 if symbol_set.include_epsilon:
                     first_plus_set.update(symbol_set.remove_epsilon())
                     first_plus_set.update(self.follow_set[lhs_symbol])
@@ -42,5 +46,11 @@ class FirstPlusSet:
                 for symbol in first_plus_set:
                     if symbol in self.first_plus_set[lhs_symbol]:
                         msg = "Lookahead {} index {} already exists in {}"
-                        raise ValueError(msg.format(symbol, production_index, self.first_plus_set[lhs_symbol]))
+                        raise ValueError(
+                            msg.format(
+                                symbol,
+                                production_index,
+                                self.first_plus_set[lhs_symbol],
+                            )
+                        )
                     self.first_plus_set[lhs_symbol][symbol] = production_index

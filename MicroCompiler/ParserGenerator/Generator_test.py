@@ -13,10 +13,16 @@ class TestGenerator(unittest.TestCase):
         real_result = g.generate()
 
         expect_result = {
-            NonTerminal('statement'): {Terminal(CHARACTER, 'plus'): 0, Terminal(CHARACTER, ';'): '--',
-                                       Terminal(CHARACTER, 'minus'): 0},
-            NonTerminal('expression'): {Terminal(CHARACTER, 'plus'): 1, Terminal(CHARACTER, ';'): '--',
-                                        Terminal(CHARACTER, 'minus'): 2}
+            NonTerminal("statement"): {
+                Terminal(CHARACTER, "plus"): 0,
+                Terminal(CHARACTER, ";"): "--",
+                Terminal(CHARACTER, "minus"): 0,
+            },
+            NonTerminal("expression"): {
+                Terminal(CHARACTER, "plus"): 1,
+                Terminal(CHARACTER, ";"): "--",
+                Terminal(CHARACTER, "minus"): 2,
+            },
         }
 
         g.write_yaml("../output.yaml")

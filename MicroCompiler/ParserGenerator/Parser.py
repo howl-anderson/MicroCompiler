@@ -3,22 +3,20 @@ from MicroCompiler.Lookahead.Terminal import Terminal
 from MicroCompiler.Lookahead.Epsilon import Epsilon
 from MicroCompiler.Productions import Productions
 from MicroCompiler.Lookahead.EOF import EOF
-from .Lexeme import (
+from MicroCompiler.ParserGenerator.Lexeme import (
     NON_TERMINAL,
     TERMINAL,
     PRODUCT,
     ALTERNATIVE,
     SEMICOLON,
-    EPSILON
+    EPSILON,
 )
 
 
-built_in_terminal = (
-)
+built_in_terminal = ()
 
 # filter function list
-terminal_filter_list = (
-)
+terminal_filter_list = ()
 
 
 class Parser:
@@ -32,7 +30,10 @@ class Parser:
         super().__init__()
 
     def _match(self, value):
-        if self.token_list[self.token_index].type_ == TERMINAL and self.token_list[self.token_index] == value:
+        if (
+            self.token_list[self.token_index].type_ == TERMINAL
+            and self.token_list[self.token_index] == value
+        ):
             self.token_index += 1
             return True
         else:
@@ -78,11 +79,16 @@ class Parser:
 
     symbol -> non_terminal | terminal ;
     """
+
     def parse(self):
         return self._statement()
 
     def _statement(self):
-        return self._production() and self._match_type(SEMICOLON) and self._other_production()
+        return (
+            self._production()
+            and self._match_type(SEMICOLON)
+            and self._other_production()
+        )
 
     def _other_production(self):
         save_point = self.token_index
@@ -104,13 +110,21 @@ class Parser:
 
             self.production_dict[self.token_list[save_point]] = productions_object
 
-            return self._match_type(PRODUCT) and self._symbols(productions_object) and self._other_symbols(productions_object)
+            return (
+                self._match_type(PRODUCT)
+                and self._symbols(productions_object)
+                and self._other_symbols(productions_object)
+            )
         else:
             return False
 
     def _other_symbols(self, productions_object):
         save_point = self.token_index
-        if self._match_type(ALTERNATIVE) and self._symbols(productions_object) and self._other_symbols(productions_object):
+        if (
+            self._match_type(ALTERNATIVE)
+            and self._symbols(productions_object)
+            and self._other_symbols(productions_object)
+        ):
             return True
         else:
             self.token_index = save_point
@@ -176,6 +190,8 @@ class Parser:
                     elif rhs_symbol.type_ == NON_TERMINAL:
                         production_symbols.append(NonTerminal(rhs_symbol.value))
                     elif rhs_symbol.type_ == TERMINAL:
-                        production_symbols.append(Terminal(type_=None, data=rhs_symbol.value))
+                        production_symbols.append(
+                            Terminal(type_=None, data=rhs_symbol.value)
+                        )
 
         return formal_production

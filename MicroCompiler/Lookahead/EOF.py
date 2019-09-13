@@ -4,10 +4,10 @@ class EOF:
 
     @property
     def value(self):
-        return '<EOF>'
+        return "<EOF>"
 
     def __hash__(self):
-        return hash('<EOF>')
+        return hash("<EOF>")
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
