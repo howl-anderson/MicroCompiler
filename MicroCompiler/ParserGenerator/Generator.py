@@ -95,6 +95,5 @@ class Generator:
         return self.structure
 
     def write_yaml(self, output_file):
-        fd = open(output_file, "w")
-        yaml.dump(self.structure, fd)
-        fd.close()
+        with open(output_file, "w") as fd:
+            yaml.dump(self.structure, fd)
