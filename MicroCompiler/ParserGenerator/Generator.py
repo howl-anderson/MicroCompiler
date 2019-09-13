@@ -18,7 +18,9 @@ class Generator:
         self.input_file = input_file
 
     def generate(self):
-        bnf_string = open(self.input_file).read()
+        with open(self.input_file) as fd:
+            bnf_string = fd.read()
+
         lexer = Lexer()
         lexer.parse(bnf_string)
 
