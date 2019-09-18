@@ -11,6 +11,11 @@
 - LL语法： 基本已经完成，LL语法可以覆盖绝大多数编程语言的需求了，比如 Python
 - LR语法/LALR语法： 尚未完成，短期内不太可能会完成
 
+# Features
+计算 `6 * (2 + 2)` 的值过程可以通过以下抽象语法树（图由本项目编译器自动生成，经过 `Cytoscape` 渲染得到）：
+
+![](demo/arithmetic_calculator/calculator.png)
+
 # 使用文档
 ## LL(1) 语法
 ### MBNF 格式
