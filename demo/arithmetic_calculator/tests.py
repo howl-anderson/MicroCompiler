@@ -7,7 +7,7 @@ user_level_parser = Parser()
 
 for index, (token_list, expected_result) in enumerate(test_cases):
     print("working on: ", token_list)
-    result = arithmetic_calculator("output.yaml", token_list, user_level_parser)
+    result = arithmetic_calculator("calculator.yaml", token_list, user_level_parser)
     if result != expected_result:
         print("test failed: at #", index)
         print(token_list, result)

@@ -6,7 +6,7 @@ from MicroCompiler.abstract_syntax_tree.abstract_syntax_tree import (
 from MicroCompiler.abstract_syntax_tree.node import create_or_get_node
 
 
-def build_parser_evaluator(call_stack):
+def build_parser_evaluator(call_stack, graph_file=None):
     DG = nx.DiGraph()
 
     graph = nx.DiGraph()
@@ -47,6 +47,7 @@ def build_parser_evaluator(call_stack):
 
     topological_ordered_list = [DG.nodes[i] for i in nx.topological_sort(DG)]
 
-    nx.write_graphml(graph, "data.graphml")
+    if graph_file:
+        nx.write_graphml(graph, graph_file)
 
     return topological_ordered_list
