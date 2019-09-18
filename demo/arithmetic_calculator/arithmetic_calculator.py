@@ -1,7 +1,7 @@
 from MicroCompiler.SkeletonParser import SkeletonParser
 from MicroCompiler.parser_evaluator import ParserEvaluator
 from MicroCompiler.postfix_expression.evaluator import Evaluator
-from demo.arithmetic_calculator.parser_evaluator_builder import \
+from MicroCompiler.parser_evaluator_builder import \
     build_parser_evaluator
 
 
