@@ -11,7 +11,7 @@ setup(
     url="https://github.com/howl-anderson/MicroCompiler",
     license="MIT",
     author="Xiaoquan Kong",
-    install_requires=["pyyaml"],
+    install_requires=["pyyaml", "MicroRegEx"],
     author_email="u1mail2me@gmail.com",
     description="A micro compiler project to provide LL/LR/LALR syntax parser",
 )

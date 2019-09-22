@@ -25,6 +25,13 @@ class Token(object):
         )
 
 
+class WhiteSpaceToken(Token):
+    index_counter = 0
+
+    def __init__(self, value=None, index=None):
+        super(WhiteSpaceToken, self).__init__(type_='white_space', value=value, index=index)
+
+
 class Epsilon(object):
     def __repr__(self):
         return "Epsilon()"
