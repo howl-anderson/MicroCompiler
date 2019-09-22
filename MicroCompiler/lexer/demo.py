@@ -5,4 +5,4 @@ from MicroCompiler.lexer.lexer import lex_analysis
 input_string = "2+3 *  6"
 result = lex_analysis(input_string, lexer_define)
 
-print("")
+print(result)

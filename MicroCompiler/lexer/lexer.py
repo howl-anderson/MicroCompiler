@@ -13,7 +13,6 @@ def match_token(target_char, token_name_nfa_mapping, token_name_action_mapping):
             nfa_object.match(current_char_list)
             is_accepted_mapping[token_object] = nfa_object.is_accepted()
             still_alive_mapping[token_object] = bool(nfa_object.current_status)
-            print("")
 
         history.append(is_accepted_mapping)
 
@@ -65,7 +64,5 @@ def lex_analysis(input_string, user_defined_lexer_rule):
             raise ValueError("lexer parse failed")
 
         result.append((matched_str, token_object))
-
-    print("")
 
     return result

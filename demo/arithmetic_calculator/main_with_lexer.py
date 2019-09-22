@@ -30,10 +30,13 @@ def main(input_string):
     g.write_yaml(ll1_grammar_file)
 
     result = arithmetic_calculator(ll1_grammar_file, token_list, user_level_parser, graph_file)
-    print(result)
+
+    return result
 
 
 if __name__ == "__main__":
     input_string = "2+3 *  6"
 
-    main(input_string)
+    result = main(input_string)
+
+    print(result)
