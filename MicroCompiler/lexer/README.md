@@ -1,0 +1,9 @@
+# 参考文献
+* http://dinosaur.compilertools.net/lex/index.html
+* https://courses.cs.washington.edu/courses/cse401/07au/CSE401-07lex.pdf
+* https://web.stanford.edu/class/archive/cs/cs143/cs143.1112/materials/lectures/lecture04.pdf
+* https://cs.stackexchange.com/questions/97374/how-to-implement-a-maximal-munch-lexical-analyzer-by-simulating-nfa-or-running-d
+* https://karkare.github.io/cs335/lectures/04LexicalAanalysis.pdf
+* http://user.it.uu.se/~kostis/Teaching/KT1-12/Slides/handout03.pdf
+* http://courses.ics.hawaii.edu/ReviewICS312/morea/Compiling/ics312_lexing.pdf
+* http://ocw.snu.ac.kr/sites/default/files/NOTE/7048.pdf
