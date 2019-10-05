@@ -1,0 +1,38 @@
+Program -> DeclarationList ;
+DeclarationList -> Declaration DeclarationList
+                 | ϵ ;
+Declaration -> FunDecl
+             | VarDecl
+             | Statement ;
+
+FunDecl -> 'fun' Function ;
+Function -> 'id' '(' Parameters ')' Block ;
+Block -> '{' DeclarationList '}' ;
+
+VarDecl -> 'var' 'id' VarDeclAssign ';' ;
+VarDeclAssign -> '=' Expression
+               | ϵ ;
+
+Statement -> ExprStmt
+           | PrintStmt
+           | Block ;
+
+ExprStmt -> Expression ';' ;
+Expression -> Call
+            | 'num' ;
+Call -> Primary CallOrAttr ;
+CallOrAttr -> '(' Arguments ')' ;
+
+Primary -> 'id' ;
+
+Arguments -> Expression AdditionalExpressions
+            | ϵ ;
+AdditionalExpressions -> ',' Expression AdditionalExpressions
+                       | ϵ ;
+
+PrintStmt -> 'print' 'id' ';' ;
+
+Parameters -> 'id' AdditionalParameters
+             | ϵ ;
+AdditionalParameters -> ',' 'id' AdditionalParameters
+                      | ϵ ;

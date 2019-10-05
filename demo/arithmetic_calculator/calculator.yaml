@@ -1,12 +1,12 @@
 eof-marker: <EOF>
 error-marker: --
 non-terminals:
-- Expr
-- Term
-- Goal
-- Factor
-- ExprTwo
 - TermTwo
+- Expr
+- Goal
+- ExprTwo
+- Term
+- Factor
 productions:
   0:
     Goal:
@@ -108,10 +108,10 @@ table:
     <EOF>: 8
     num: --
 terminals:
-- (
-- '-'
+- /
 - '*'
 - +
-- /
-- num
+- '-'
 - )
+- num
+- (

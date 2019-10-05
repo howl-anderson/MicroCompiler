@@ -1,0 +1,412 @@
+eof-marker: <EOF>
+error-marker: --
+non-terminals:
+- Call
+- PrintStmt
+- Function
+- ExprStmt
+- Primary
+- Program
+- Parameters
+- Expression
+- AdditionalExpressions
+- CallOrAttr
+- VarDecl
+- DeclarationList
+- Statement
+- Declaration
+- Block
+- VarDeclAssign
+- FunDecl
+- Arguments
+- AdditionalParameters
+productions:
+  0:
+    Program:
+    - DeclarationList
+  1:
+    DeclarationList:
+    - Declaration
+    - DeclarationList
+  2:
+    DeclarationList: []
+  3:
+    Declaration:
+    - FunDecl
+  4:
+    Declaration:
+    - VarDecl
+  5:
+    Declaration:
+    - Statement
+  6:
+    FunDecl:
+    - fun
+    - Function
+  7:
+    Function:
+    - id
+    - (
+    - Parameters
+    - )
+    - Block
+  8:
+    Block:
+    - '{'
+    - DeclarationList
+    - '}'
+  9:
+    VarDecl:
+    - var
+    - id
+    - VarDeclAssign
+    - ;
+  10:
+    VarDeclAssign:
+    - '='
+    - Expression
+  11:
+    VarDeclAssign: []
+  12:
+    Statement:
+    - ExprStmt
+  13:
+    Statement:
+    - PrintStmt
+  14:
+    Statement:
+    - Block
+  15:
+    ExprStmt:
+    - Expression
+    - ;
+  16:
+    Expression:
+    - Call
+  17:
+    Expression:
+    - num
+  18:
+    Call:
+    - Primary
+    - CallOrAttr
+  19:
+    CallOrAttr:
+    - (
+    - Arguments
+    - )
+  20:
+    Primary:
+    - id
+  21:
+    Arguments:
+    - Expression
+    - AdditionalExpressions
+  22:
+    Arguments: []
+  23:
+    AdditionalExpressions:
+    - ','
+    - Expression
+    - AdditionalExpressions
+  24:
+    AdditionalExpressions: []
+  25:
+    PrintStmt:
+    - print
+    - id
+    - ;
+  26:
+    Parameters:
+    - id
+    - AdditionalParameters
+  27:
+    Parameters: []
+  28:
+    AdditionalParameters:
+    - ','
+    - id
+    - AdditionalParameters
+  29:
+    AdditionalParameters: []
+start-symbol: Program
+table:
+  AdditionalExpressions:
+    (: --
+    ): 24
+    ',': 23
+    ;: --
+    <EOF>: --
+    '=': --
+    fun: --
+    id: --
+    num: --
+    print: --
+    var: --
+    '{': --
+    '}': --
+  AdditionalParameters:
+    (: --
+    ): 29
+    ',': 28
+    ;: --
+    <EOF>: --
+    '=': --
+    fun: --
+    id: --
+    num: --
+    print: --
+    var: --
+    '{': --
+    '}': --
+  Arguments:
+    (: --
+    ): 22
+    ',': --
+    ;: --
+    <EOF>: --
+    '=': --
+    fun: --
+    id: 21
+    num: 21
+    print: --
+    var: --
+    '{': --
+    '}': --
+  Block:
+    (: --
+    ): --
+    ',': --
+    ;: --
+    <EOF>: --
+    '=': --
+    fun: --
+    id: --
+    num: --
+    print: --
+    var: --
+    '{': 8
+    '}': --
+  Call:
+    (: --
+    ): --
+    ',': --
+    ;: --
+    <EOF>: --
+    '=': --
+    fun: --
+    id: 18
+    num: --
+    print: --
+    var: --
+    '{': --
+    '}': --
+  CallOrAttr:
+    (: 19
+    ): --
+    ',': --
+    ;: --
+    <EOF>: --
+    '=': --
+    fun: --
+    id: --
+    num: --
+    print: --
+    var: --
+    '{': --
+    '}': --
+  Declaration:
+    (: --
+    ): --
+    ',': --
+    ;: --
+    <EOF>: --
+    '=': --
+    fun: 3
+    id: 5
+    num: 5
+    print: 5
+    var: 4
+    '{': 5
+    '}': --
+  DeclarationList:
+    (: --
+    ): --
+    ',': --
+    ;: --
+    <EOF>: 2
+    '=': --
+    fun: 1
+    id: 1
+    num: 1
+    print: 1
+    var: 1
+    '{': 1
+    '}': 2
+  ExprStmt:
+    (: --
+    ): --
+    ',': --
+    ;: --
+    <EOF>: --
+    '=': --
+    fun: --
+    id: 15
+    num: 15
+    print: --
+    var: --
+    '{': --
+    '}': --
+  Expression:
+    (: --
+    ): --
+    ',': --
+    ;: --
+    <EOF>: --
+    '=': --
+    fun: --
+    id: 16
+    num: 17
+    print: --
+    var: --
+    '{': --
+    '}': --
+  FunDecl:
+    (: --
+    ): --
+    ',': --
+    ;: --
+    <EOF>: --
+    '=': --
+    fun: 6
+    id: --
+    num: --
+    print: --
+    var: --
+    '{': --
+    '}': --
+  Function:
+    (: --
+    ): --
+    ',': --
+    ;: --
+    <EOF>: --
+    '=': --
+    fun: --
+    id: 7
+    num: --
+    print: --
+    var: --
+    '{': --
+    '}': --
+  Parameters:
+    (: --
+    ): 27
+    ',': --
+    ;: --
+    <EOF>: --
+    '=': --
+    fun: --
+    id: 26
+    num: --
+    print: --
+    var: --
+    '{': --
+    '}': --
+  Primary:
+    (: --
+    ): --
+    ',': --
+    ;: --
+    <EOF>: --
+    '=': --
+    fun: --
+    id: 20
+    num: --
+    print: --
+    var: --
+    '{': --
+    '}': --
+  PrintStmt:
+    (: --
+    ): --
+    ',': --
+    ;: --
+    <EOF>: --
+    '=': --
+    fun: --
+    id: --
+    num: --
+    print: 25
+    var: --
+    '{': --
+    '}': --
+  Program:
+    (: --
+    ): --
+    ',': --
+    ;: --
+    <EOF>: 0
+    '=': --
+    fun: 0
+    id: 0
+    num: 0
+    print: 0
+    var: 0
+    '{': 0
+    '}': --
+  Statement:
+    (: --
+    ): --
+    ',': --
+    ;: --
+    <EOF>: --
+    '=': --
+    fun: --
+    id: 12
+    num: 12
+    print: 13
+    var: --
+    '{': 14
+    '}': --
+  VarDecl:
+    (: --
+    ): --
+    ',': --
+    ;: --
+    <EOF>: --
+    '=': --
+    fun: --
+    id: --
+    num: --
+    print: --
+    var: 9
+    '{': --
+    '}': --
+  VarDeclAssign:
+    (: --
+    ): --
+    ',': --
+    ;: 11
+    <EOF>: --
+    '=': 10
+    fun: --
+    id: --
+    num: --
+    print: --
+    var: --
+    '{': --
+    '}': --
+terminals:
+- )
+- '='
+- ','
+- fun
+- ;
+- num
+- '{'
+- print
+- '}'
+- id
+- var
+- (
