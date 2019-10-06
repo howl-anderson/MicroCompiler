@@ -1,14 +1,13 @@
 import unittest
-import pprint
 
-from MicroCompiler.Productions import Productions
-from MicroCompiler.Lookahead.Epsilon import Epsilon
 from MicroCompiler.Lookahead.EOF import EOF
+from MicroCompiler.Lookahead.Epsilon import Epsilon
 from MicroCompiler.Lookahead.FirstSet import FirstSet
 from MicroCompiler.Lookahead.FollowSet import FollowSet
 from MicroCompiler.Lookahead.NonTerminal import NonTerminal
 from MicroCompiler.Lookahead.Terminal import CHARACTER
 from MicroCompiler.Lookahead.Terminal import Terminal
+from MicroCompiler.Productions import Productions
 
 
 class TestFollowSet(unittest.TestCase):

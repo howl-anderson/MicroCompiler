@@ -49,6 +49,7 @@ class FirstSet:
                     rhs.update(self.first_set[rhs_symbol])
 
                 if not self.first_set[rhs_symbol].include_epsilon:
+                    # stop visit next symbol
                     break
 
             self.first_set[lsh_symbol].update(rhs)

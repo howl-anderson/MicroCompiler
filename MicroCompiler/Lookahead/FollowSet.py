@@ -14,7 +14,7 @@ class FollowSet:
         self.follow_set_table = {}
 
     def compute(self):
-        # init the follow_set
+        # init the follow_set to empty
         for symbol in self.production.non_terminals:
             self.follow_set[symbol] = SymbolSet()
 
@@ -37,10 +37,10 @@ class FollowSet:
             trailer = self.follow_set[lhs_symbol]
             for rhs_symbol in reversed(production):
                 if isinstance(rhs_symbol, NonTerminal):
-                    self.follow_set[rhs_symbol] = self.follow_set[rhs_symbol] | trailer
+                    self.follow_set[rhs_symbol] = self.follow_set[rhs_symbol].union(trailer)
 
                     if self.first_set[rhs_symbol].include_epsilon:
-                        trailer = trailer | self.first_set[rhs_symbol].remove_epsilon()
+                        trailer = trailer.union(self.first_set[rhs_symbol].remove_epsilon())
                     else:
                         trailer = self.first_set[rhs_symbol]
                 else:

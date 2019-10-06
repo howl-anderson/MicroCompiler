@@ -1,0 +1,12 @@
+Goal -> Expr ;
+Expr -> Term ExprTwo ;
+ExprTwo -> '+' Term ExprTwo
+         | '-' Term ExprTwo
+         | ϵ ;
+Term -> Factor TermTwo ;
+TermTwo -> '*' Factor TermTwo
+         | '/' Factor TermTwo
+         | ϵ ;
+Factor -> '(' Expr ')'
+        | 'num'
+        | 'name' ;

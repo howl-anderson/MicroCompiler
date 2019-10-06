@@ -1,9 +1,10 @@
 from MicroCompiler.Lookahead.FirstSet import FirstSet
 from MicroCompiler.Lookahead.FollowSet import FollowSet
+from MicroCompiler.Productions import Productions
 
 
 class FirstPlusSet:
-    def __init__(self, production):
+    def __init__(self, production: Productions):
         self.first_set = None
         self.follow_set = None
         self.first_set_mapping = None
@@ -46,15 +47,14 @@ class FirstPlusSet:
                 for symbol in first_plus_set:
                     if symbol in self.first_plus_set[lhs_symbol]:
                         msg = (
-                            "In Production {} -> <#{}> {}" " ; "
-                            "Lookahead {!r} index {} already exists in {}"
+                            "In Production {} -> <#{}> {} ; "
+                            "Lookahead symbol {} are not unique; "
+                            "Already exist: {}"
                         )
                         raise ValueError(
                             msg.format(
-                                lhs_symbol,
-                                production_index, production,
+                                lhs_symbol, production_index, production,
                                 symbol,
-                                production_index,
                                 self.first_plus_set[lhs_symbol],
                             )
                         )
