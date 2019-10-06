@@ -1,3 +1,5 @@
+from typing import List
+
 from MicroCompiler.Lookahead.NonTerminal import NonTerminal
 from MicroCompiler.Lookahead.Terminal import Terminal
 from MicroCompiler.Lookahead.Epsilon import Epsilon
@@ -10,6 +12,7 @@ from MicroCompiler.ParserGenerator.Lexeme import (
     ALTERNATIVE,
     SEMICOLON,
     EPSILON,
+    Lexeme,
 )
 
 
@@ -20,7 +23,7 @@ terminal_filter_list = ()
 
 
 class Parser:
-    def __init__(self, token_list):
+    def __init__(self, token_list: List[Lexeme]):
         self.token_index = 0
         self.token_list = token_list
 
@@ -67,23 +70,12 @@ class Parser:
             # print("{} is not TERMINAL".format(self.token_list[self.token_index]))
             return False
 
-    """
-    statement -> production ';' other_production ;
-    other_production -> statement | ϵ ;
-
-    production -> non_terminal '->' symbols other_symbols ;
-    other_symbols -> '|' symbols other_symbols | ϵ ;
-
-    symbols -> symbol other_symbol | 'ϵ' ;
-    other_symbol -> symbol other_symbol | ϵ ;
-
-    symbol -> non_terminal | terminal ;
-    """
-
     def parse(self):
         return self._statement()
 
     def _statement(self):
+        # statement -> production ';' other_production ;
+
         return (
             self._production()
             and self._match_type(SEMICOLON)
@@ -91,6 +83,8 @@ class Parser:
         )
 
     def _other_production(self):
+        # other_production -> statement | ϵ ;
+
         save_point = self.token_index
         if self._statement():
             return True
@@ -100,6 +94,8 @@ class Parser:
             return True
 
     def _production(self):
+        # production -> non_terminal '->' symbols other_symbols ;
+
         save_point = self.token_index
         if self._non_terminal():
             productions_object = []
@@ -119,6 +115,8 @@ class Parser:
             return False
 
     def _other_symbols(self, productions_object):
+        # other_symbols -> '|' symbols other_symbols | ϵ ;
+
         save_point = self.token_index
         if (
             self._match_type(ALTERNATIVE)
@@ -131,34 +129,45 @@ class Parser:
             # do nothing for epsilon
             return True
 
-    def _symbols(self, productions_object):
+    def _symbols(self, productions_object: List):
+        # symbols -> symbol other_symbol | 'ϵ' ;
+
         save_point = self.token_index
 
         production = []
         result = self._symbol(production) and self._other_symbol(production)
 
         if result:
+            # branch: symbol other_symbol
             productions_object.append(production)
 
         if not result:
             if self._match_type(EPSILON):
+                # branch: 'ϵ'
                 productions_object.append([self.token_list[save_point]])
                 return True
             return False
         return True
 
-    def _other_symbol(self, production):
+    def _other_symbol(self, production: List):
+        # other_symbol -> symbol other_symbol | ϵ ;
+
         save_point = self.token_index
         if self._symbol(production) and self._other_symbol(production):
+            # branch: symbol other_symbol
             return True
         else:
+            # branch: ϵ
             self.token_index = save_point
             # do nothing for epsilon
             return True
 
-    def _symbol(self, production):
+    def _symbol(self, production: List):
+        # symbol -> non_terminal | terminal ;
+
         save_point = self.token_index
         if self._non_terminal():
+            # branch: non_terminal
             production.append(self.token_list[save_point])
             return True
         else:
@@ -166,10 +175,11 @@ class Parser:
             result = self._terminal()
 
             if result:
+                # branch: non_terminal
                 production.append(self.token_list[save_point])
             return result
 
-    def generate_production(self):
+    def generate_production(self) -> Productions:
         formal_production = Productions()
 
         for lhs_lexeme in self.production_dict:

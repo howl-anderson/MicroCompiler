@@ -1,3 +1,5 @@
+from typing import List
+
 from MicroCompiler.ParserGenerator.Lexeme import Lexeme
 from MicroCompiler.ParserGenerator.Lexeme import (
     NON_TERMINAL,
@@ -11,7 +13,7 @@ from MicroCompiler.ParserGenerator.Lexeme import (
 
 class Lexer:
     def __init__(self):
-        self.token_list = []
+        self.token_list = []  # type: List[Lexeme]
 
     def parse(self, string_: str):
         raw_token_list = string_.split()

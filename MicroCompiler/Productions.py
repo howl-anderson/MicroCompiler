@@ -1,3 +1,5 @@
+from typing import List, Mapping, Union
+
 from MicroCompiler.Lookahead.Terminal import Terminal
 from MicroCompiler.Lookahead.Epsilon import Epsilon
 from MicroCompiler.Lookahead.EOF import EOF
@@ -12,7 +14,7 @@ class Productions(dict):
         self._elements = set()
         self._terminals = set()
         self._non_terminals = set()
-        self.start_symbol = None
+        self.start_symbol = None  # type: NonTerminal
 
         super().__init__(*args, **kwargs)
 

@@ -1,17 +1,15 @@
 import unittest
-import pprint
 
-from MicroCompiler.Productions import Productions
-from MicroCompiler.Lookahead.Epsilon import Epsilon
 from MicroCompiler.Lookahead.EOF import EOF
-from MicroCompiler.Lookahead.FirstSet import FirstSet
+from MicroCompiler.Lookahead.Epsilon import Epsilon
+from MicroCompiler.Lookahead.FirstPlusSet import FirstPlusSet
 from MicroCompiler.Lookahead.NonTerminal import NonTerminal
 from MicroCompiler.Lookahead.Terminal import CHARACTER
 from MicroCompiler.Lookahead.Terminal import Terminal
-from MicroCompiler.Lookahead.SymbolSet import SymbolSet
+from MicroCompiler.Productions import Productions
 
 
-class TestFirstSet(unittest.TestCase):
+class TestFirstPlusSet(unittest.TestCase):
     def test_conception(self):
         statement = NonTerminal("Statement")
         expression = NonTerminal("Expression")
@@ -25,9 +23,23 @@ class TestFirstSet(unittest.TestCase):
 
         production.set_start_symbol(statement)
 
-        fs = FirstSet(production)
+        fs = FirstPlusSet(production)
         fs.compute()
-        print(fs.first_set)
+
+        real_result = fs.first_plus_set
+
+        expect_result = {
+            NonTerminal("Expression"): {
+                Terminal(CHARACTER, "+"): 0,
+                Terminal(CHARACTER, "-"): 1,
+            },
+            NonTerminal("Statement"): {
+                Terminal(CHARACTER, "+"): 0,
+                Terminal(CHARACTER, "-"): 0,
+            },
+        }
+
+        self.assertEqual(real_result, expect_result)
 
     def test_epsilon(self):
         statement = NonTerminal("Statement")
@@ -46,12 +58,25 @@ class TestFirstSet(unittest.TestCase):
 
         production.set_start_symbol(statement)
 
-        fs = FirstSet(production)
+        fs = FirstPlusSet(production)
         fs.compute()
-        print(fs.first_set)
 
-        print(fs.first_set_table)
-        print(fs.first_set_mapping)
+        real_result = fs.first_plus_set
+
+        expect_result = {
+            NonTerminal("Statement"): {
+                Terminal(CHARACTER, "+"): 0,
+                Terminal(CHARACTER, "-"): 0,
+                Terminal(CHARACTER, ";"): 0,
+            },
+            NonTerminal("Expression"): {
+                Terminal(CHARACTER, "+"): 0,
+                Terminal(CHARACTER, "-"): 1,
+                Terminal(CHARACTER, ";"): 2,
+            },
+        }
+
+        self.assertEqual(real_result, expect_result)
 
     def test_real(self):
         """
@@ -99,7 +124,7 @@ class TestFirstSet(unittest.TestCase):
         production = Productions(
             {
                 goal: [[expr]],
-                expr: [[term, term_two]],
+                expr: [[term, expr_two]],
                 expr_two: [[plus, term, expr_two], [minus, term, expr_two], [epsilon]],
                 term: [[factor, term_two]],
                 term_two: [
@@ -113,30 +138,46 @@ class TestFirstSet(unittest.TestCase):
 
         production.set_start_symbol(goal)
 
-        fs = FirstSet(production)
+        fs = FirstPlusSet(production)
         fs.compute()
-        real_result = fs.first_set
+
+        real_result = fs.first_plus_set
 
         expect_result = {
-            eof: SymbolSet({eof}),
-            plus: SymbolSet({plus}),
-            minus: SymbolSet({minus}),
-            epsilon: SymbolSet({epsilon}),
-            asteroid: SymbolSet({asteroid}),
-            div: SymbolSet({div}),
-            open_parenthesis: SymbolSet({open_parenthesis}),
-            close_parenthesis: SymbolSet({close_parenthesis}),
-            num: SymbolSet({num}),
-            name: SymbolSet({name}),
-            expr_two: SymbolSet({plus, minus, epsilon}),
-            term_two: SymbolSet({asteroid, div, epsilon}),
-            factor: SymbolSet({open_parenthesis, num, name}),
-            term: SymbolSet({open_parenthesis, num, name}),
-            expr: SymbolSet({open_parenthesis, num, name}),
-            goal: SymbolSet({open_parenthesis, num, name}),
+            NonTerminal("Goal"): {
+                Terminal(CHARACTER, "name"): 0,
+                Terminal(CHARACTER, "num"): 0,
+                Terminal(CHARACTER, "("): 0,
+            },
+            NonTerminal("Expr"): {
+                Terminal(CHARACTER, "name"): 0,
+                Terminal(CHARACTER, "num"): 0,
+                Terminal(CHARACTER, "("): 0,
+            },
+            NonTerminal("ExprTwo"): {
+                EOF(): 2,
+                Terminal(CHARACTER, "+"): 0,
+                Terminal(CHARACTER, "-"): 1,
+                Terminal(CHARACTER, ")"): 2,
+            },
+            NonTerminal("Term"): {
+                Terminal(CHARACTER, "name"): 0,
+                Terminal(CHARACTER, "num"): 0,
+                Terminal(CHARACTER, "("): 0,
+            },
+            NonTerminal("TermTwo"): {
+                EOF(): 2,
+                Terminal(CHARACTER, "+"): 2,
+                Terminal(CHARACTER, "-"): 2,
+                Terminal(CHARACTER, "/"): 1,
+                Terminal(CHARACTER, "*"): 0,
+                Terminal(CHARACTER, ")"): 2,
+            },
+            NonTerminal("Factor"): {
+                Terminal(CHARACTER, "name"): 2,
+                Terminal(CHARACTER, "num"): 1,
+                Terminal(CHARACTER, "("): 0,
+            },
         }
 
-        # pprint.pprint(real_result)
-
-        self.maxDiff = None
         self.assertEqual(real_result, expect_result)
