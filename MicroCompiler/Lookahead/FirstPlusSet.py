@@ -45,9 +45,14 @@ class FirstPlusSet:
                 self.first_plus_set.setdefault(lhs_symbol, {})
                 for symbol in first_plus_set:
                     if symbol in self.first_plus_set[lhs_symbol]:
-                        msg = "Lookahead {} index {} already exists in {}"
+                        msg = (
+                            "In Production {} -> <#{}> {}" " ; "
+                            "Lookahead {!r} index {} already exists in {}"
+                        )
                         raise ValueError(
                             msg.format(
+                                lhs_symbol,
+                                production_index, production,
                                 symbol,
                                 production_index,
                                 self.first_plus_set[lhs_symbol],
