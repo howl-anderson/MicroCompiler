@@ -14,14 +14,49 @@ VarDeclAssign -> '=' Expression
                | ϵ ;
 
 Statement -> ExprStmt
+           | IfStmt
            | PrintStmt
            | Block ;
 
 ExprStmt -> Expression ';' ;
-Expression -> Call
+Expression -> Assignment
             | 'num' ;
+Assignment -> LogicOr ;
+LogicOr -> LogicAnd AdditionalLogicOr ;
+AdditionalLogicOr -> 'or' LogicAnd AdditionalLogicOr
+                   | ϵ ;
+LogicAnd -> Equality AdditionalLogicAnd ;
+AdditionalLogicAnd -> 'and' Equality AdditionalLogicAnd
+                    | ϵ ;
+                    
+Equality -> Comparison AdditionalEquality ;
+AdditionalEquality -> '!=' Comparison AdditionalEquality
+                    | '==' Comparison AdditionalEquality
+                    | ϵ ;
+Comparison -> Addition AdditionalComparison ;
+AdditionalComparison -> '>' Addition AdditionalComparison
+                      | '>=' Addition AdditionalComparison
+                      | '<' Addition AdditionalComparison
+                      | '<=' Addition AdditionalComparison
+                      | ϵ ;
+Addition -> Multiplication AdditionalAddition ;
+AdditionalAddition -> '-' Multiplication AdditionalAddition
+                    | '+' Multiplication AdditionalAddition
+                    | ϵ ;
+Multiplication -> Unary AdditionalMultiplication ;
+AdditionalMultiplication -> '/' Unary AdditionalMultiplication
+                          | '*' Unary AdditionalMultiplication
+                          | ϵ ;
+
+Unary -> '!' Unary
+       | '-' Unary
+       | Call ;
+
 Call -> Primary CallOrAttr ;
 CallOrAttr -> '(' Arguments ')' ;
+
+IfStmt -> 'if' '(' Expression ')' Statement ElseStmt ;
+ElseStmt -> 'else' Statement ;
 
 Primary -> 'id' ;
 
