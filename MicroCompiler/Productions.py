@@ -23,6 +23,18 @@ class Productions(dict):
             raise ValueError("start symbol must in production.")
         self.start_symbol = start_symbol
 
+    def get_all_elements(self, without_start_symbol=True):
+        if not without_start_symbol:
+            return self._elements
+        else:
+            return self._elements - {self.start_symbol, }
+
+    def get_all_non_terminals(self, without_start_symbol=True):
+        if not without_start_symbol:
+            return self._non_terminals
+        else:
+            return self._non_terminals - {self.start_symbol, }
+
     def compute_elements(self):
         for non_terminal in self:
             self._elements.add(non_terminal)

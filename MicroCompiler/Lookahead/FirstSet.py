@@ -56,3 +56,10 @@ class FirstSet:
 
             self.first_set_mapping.setdefault(lsh_symbol, {})
             self.first_set_mapping[lsh_symbol][production_index] = rhs
+
+    def get_first_set(self, lookup_list):
+        for item in lookup_list:
+            first_set = self.first_set.get(item, None)
+
+            if first_set is not None:
+                return first_set

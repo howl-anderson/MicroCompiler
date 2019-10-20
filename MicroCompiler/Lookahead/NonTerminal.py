@@ -23,3 +23,6 @@ class NonTerminal:
 
     def __repr__(self):
         return "{}('{}')".format(self.__class__.__name__, self.name)
+
+    def __deepcopy__(self, memodict={}):
+        return self.__class__(self.name)
