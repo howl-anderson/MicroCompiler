@@ -1,0 +1,120 @@
+Program -> DeclarationList ;
+DeclarationList -> Declaration DeclarationList
+                 | ϵ ;
+
+
+Declaration -> ClassDecl
+             | FunDecl
+             | VarDecl
+             | Statement ;
+             
+ClassDecl -> 'class' 'id' BaseClass '{' FunctionList '}' ;
+BaseClass -> '<' 'id'
+           | ϵ ;
+FunctionList -> Function FunctionList
+              | ϵ ;
+
+FunDecl -> 'fun' Function ;
+
+VarDecl -> 'var' 'id' VarDeclAssign ';' ;
+VarDeclAssign -> '=' Expression
+               | ϵ ;
+
+
+Statement -> ExprStmt
+           | ForStmt
+           | IfStmt
+           | PrintStmt
+           | ReturnStmt
+           | WhileStmt
+           | Block ;
+
+ExprStmt -> Expression ';' ;
+           
+ForStmt -> 'for' '(' ForStmtControl ')' Statement ;
+ForStmtControl -> ForStmtControlPrefix ForStmtControlInfix ';' ForStmtControlPostfix ;
+ForStmtControlPrefix -> VarDecl
+                   | ExprStmt
+                   | ';' ;
+ForStmtControlInfix -> Expression
+                     | ϵ ;
+ForStmtControlPostfix -> Expression
+                     | ϵ ;
+
+IfStmt -> 'if' '(' Expression ')' Statement ElseStmt ;
+ElseStmt -> 'else' Statement ;
+
+PrintStmt -> 'print' Expression ';' ;
+
+ReturnStmt -> 'return' OptionalExpression ';' ;
+OptionalExpression -> Expression
+                    | ϵ ;
+
+WhileStmt -> 'while' '(' Expression ')' Statement ;
+
+Block -> '{' DeclarationList '}' ;
+
+
+Expression -> Assignment ;
+Assignment -> OptionalAttrHost 'id' '=' Assignment
+            | LogicOr ;
+OptionalAttrHost -> Call '.'
+                  | ϵ ;
+
+LogicOr -> LogicAnd AdditionalLogicOr ;
+AdditionalLogicOr -> 'or' LogicAnd AdditionalLogicOr
+                   | ϵ ;
+LogicAnd -> Equality AdditionalLogicAnd ;
+AdditionalLogicAnd -> 'and' Equality AdditionalLogicAnd
+                    | ϵ ;
+                    
+Equality -> Comparison AdditionalEquality ;
+AdditionalEquality -> '!=' Comparison AdditionalEquality
+                    | '==' Comparison AdditionalEquality
+                    | ϵ ;
+Comparison -> Addition AdditionalComparison ;
+AdditionalComparison -> '>' Addition AdditionalComparison
+                      | '>=' Addition AdditionalComparison
+                      | '<' Addition AdditionalComparison
+                      | '<=' Addition AdditionalComparison
+                      | ϵ ;
+Addition -> Multiplication AdditionalAddition ;
+AdditionalAddition -> '-' Multiplication AdditionalAddition
+                    | '+' Multiplication AdditionalAddition
+                    | ϵ ;
+Multiplication -> Unary AdditionalMultiplication ;
+AdditionalMultiplication -> '/' Unary AdditionalMultiplication
+                          | '*' Unary AdditionalMultiplication
+                          | ϵ ;
+
+ReturnStmt -> 'return' OptionalExpression ';' ;
+OptionalExpression -> Expression
+                    | ϵ ;
+
+Unary -> '!' Unary
+       | '-' Unary
+       | Call ;
+
+Call -> Primary CallOrAttr ;
+CallOrAttr -> CallOrAttrItem CallOrAttr
+            | ϵ ;
+CallOrAttrItem -> '(' OptionalArguments ')'
+                | '.' 'id' ;
+OptionalArguments -> Arguments
+                   | ϵ ;
+
+Primary -> 'true' | 'false' | 'nil' | 'this'
+         | 'num' | 'str' | 'id' | '(' Expression ')'
+         | 'super' '.' 'id' ;
+
+Function -> 'id' '(' OptionalParameters ')' Block ;
+OptionalParameters -> Parameters
+                    | ϵ ;
+
+Parameters -> 'id' AdditionalParameters ;
+AdditionalParameters -> ',' 'id' AdditionalParameters
+                      | ϵ ;
+
+Arguments -> Expression AdditionalExpressions ;
+AdditionalExpressions -> ',' Expression AdditionalExpressions
+                       | ϵ ;
