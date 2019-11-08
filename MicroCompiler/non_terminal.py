@@ -1,7 +1,7 @@
-from MicroCompiler.Lookahead.symbol import Symbol
+# Used to replace MicroCompiler.Lookahead.NonTerminal.NonTerminal
 
 
-class NonTerminal(Symbol):
+class NonTerminal:
     def __init__(self, name):
         self.name = name
 
@@ -14,9 +14,7 @@ class NonTerminal(Symbol):
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return False
-        if self.name == other.name:
-            return True
-        return False
+        return self.name == other.name
 
     def __hash__(self):
         return hash(self.name)

@@ -1,0 +1,37 @@
+eof-marker: <EOF>
+error-marker: --
+non-terminals: [ExprTwo, Term, TermTwo, Factor, Goal, Expr]
+productions:
+  0:
+    ExprTwo: [+, Term, ExprTwo]
+  1:
+    ExprTwo: ['-', Term, ExprTwo]
+  2:
+    ExprTwo: []
+  3:
+    Goal: [Expr]
+  4:
+    Term: [Factor, TermTwo]
+  5:
+    Factor: [(, Expr, )]
+  6:
+    Factor: [num]
+  7:
+    Factor: [name]
+  8:
+    Expr: [Term, ExprTwo]
+  9:
+    TermTwo: ['*', Factor, TermTwo]
+  10:
+    TermTwo: [/, Factor, TermTwo]
+  11:
+    TermTwo: []
+start-symbol: Goal
+table:
+  Expr: {(: 8, ): --, '*': --, +: --, '-': --, /: --, <EOF>: --, name: 8, num: 8}
+  ExprTwo: {(: --, ): 2, '*': --, +: 0, '-': 1, /: --, <EOF>: 2, name: --, num: --}
+  Factor: {(: 5, ): --, '*': --, +: --, '-': --, /: --, <EOF>: --, name: 7, num: 6}
+  Goal: {(: 3, ): --, '*': --, +: --, '-': --, /: --, <EOF>: --, name: 3, num: 3}
+  Term: {(: 4, ): --, '*': --, +: --, '-': --, /: --, <EOF>: --, name: 4, num: 4}
+  TermTwo: {(: --, ): 11, '*': 9, +: 11, '-': 11, /: 10, <EOF>: 11, name: --, num: --}
+terminals: [+, '-', (, '*', /, name, ), num]

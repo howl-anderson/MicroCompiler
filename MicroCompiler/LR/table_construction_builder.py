@@ -1,17 +1,55 @@
-from typing import Set, FrozenSet
+from typing import Set, FrozenSet, Union, Tuple
 
 from MicroCompiler.LR.canonical_collectoin_builder import canonical_collection_builder
 from MicroCompiler.LR.goto_operation import goto_operation
 from MicroCompiler.LR.lr_one_item import LR1Item
 from MicroCompiler.LR.rhs import RightHandSide
+from MicroCompiler.LR.state import State
 from MicroCompiler.Lookahead.EOF import EOF
 from MicroCompiler.Lookahead.FirstSet import FirstSet
-from MicroCompiler.Lookahead.NonTerminal import NonTerminal
-from MicroCompiler.Lookahead.Terminal import Terminal
+from MicroCompiler.cfg import NonTerminal
+from MicroCompiler.cfg import Terminal
 from MicroCompiler.Productions import Productions
 
 
-class Shift(object):
+class ShiftReduceConflict(Exception):
+    pass
+
+
+class ReduceReduceConflict(Exception):
+    pass
+
+
+class ActionTable(dict):
+    def add_action(
+        self,
+        condition: Tuple[State, Union[NonTerminal, Terminal, EOF]],
+        action: "ParserAction",
+    ):
+        if condition not in self:
+            self[condition] = action
+        else:
+            existed_action = self[condition]
+
+            if existed_action == action:
+                # do nothing
+                return
+
+            if isinstance(action, Shift) and isinstance(existed_action, Reduce):
+                raise ShiftReduceConflict()
+            elif isinstance(action, Reduce) and isinstance(existed_action, Shift):
+                raise ShiftReduceConflict()
+            elif isinstance(action, Reduce) and isinstance(existed_action, Reduce):
+                raise ReduceReduceConflict()
+            else:
+                raise ValueError()
+
+
+class ParserAction(object):
+    pass
+
+
+class Shift(ParserAction):
     def __init__(self, next_state):
         self.next_state = next_state
 
@@ -21,13 +59,16 @@ class Shift(object):
     def __repr__(self):
         return "{!s}({!r})".format(self.__class__.__name__, self.next_state)
 
+    def __eq__(self, other):
+        return self.next_state == other.next_state
 
-class Accept(object):
+
+class Accept(ParserAction):
     def __repr__(self):
         return "{}".format(self.__class__.__name__)
 
 
-class Reduce(object):
+class Reduce(ParserAction):
     def __init__(self, lhs, rhs):
         self.lhs = lhs
         self.rhs = rhs
@@ -39,10 +80,8 @@ class Reduce(object):
         return "{!s}({!r}, {!r})".format(self.__class__.__name__, self.lhs, self.rhs)
 
 
-def table_construction_builder(
-    states: Set[FrozenSet[LR1Item]], productions, first_set, end_point
-):
-    action = {}
+def table_construction_builder(states: Set[State], productions, first_set, end_point):
+    action_table = ActionTable()
     goto_table = {}
 
     for state in states:
@@ -53,11 +92,13 @@ def table_construction_builder(
             next_state = goto_operation(state, symbol, productions, first_set)
             if isinstance(symbol, Terminal) and next_state:
                 next_state.setup_id()
-                action[(state, symbol)] = Shift(next_state)
+                action_table.add_action((state, symbol), Shift(next_state))
             elif item == end_point:
-                action[(state, EOF())] = Accept()
+                action_table.add_action((state, EOF()), Accept())
             elif item.rhs.is_mark_at_end():
-                action[(state, item.lookahead)] = Reduce(item.lhs, item.rhs)
+                action_table.add_action(
+                    (state, item.lookahead), Reduce(item.lhs, item.rhs)
+                )
 
         for non_terminal in productions.get_all_non_terminals():
             # next_state = goto_table.get((state, non_terminal))
@@ -66,7 +107,7 @@ def table_construction_builder(
                 next_state.setup_id()
                 goto_table[(state, non_terminal)] = next_state
 
-    return action, goto_table
+    return action_table, goto_table
 
 
 if __name__ == "__main__":

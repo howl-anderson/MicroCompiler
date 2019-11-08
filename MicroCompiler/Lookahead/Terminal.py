@@ -1,7 +1,10 @@
+from MicroCompiler.Lookahead.symbol import Symbol
+from MicroRegEx.Token import Token
+
 CHARACTER = "CHARACTER"
 
 
-class Terminal:
+class Terminal(Symbol):
     def __init__(self, type_=None, data=None):
         if type_ is None:
             type_ = CHARACTER
@@ -10,6 +13,11 @@ class Terminal:
         if data is None:
             raise ValueError("value can not be None")
         self.data = data
+
+        # TODO: this is a little hack for store token info
+        self.token = None  # type: Token
+
+        super().__init__()
 
     @property
     def value(self):

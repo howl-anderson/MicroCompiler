@@ -1,14 +1,11 @@
 import copy
-from typing import Set, FrozenSet
+from typing import Set
 
-from MicroCompiler.LR.state import State
-from MicroCompiler.Lookahead.EOF import EOF
-from MicroCompiler.Lookahead.FirstSet import FirstSet
-from MicroCompiler.Productions import Productions
 from MicroCompiler.LR.lr_one_item import LR1Item
 from MicroCompiler.LR.rhs import RightHandSide
-from MicroCompiler.Lookahead.Terminal import Terminal
-from MicroCompiler.Lookahead.NonTerminal import NonTerminal
+from MicroCompiler.LR.state import State
+from MicroCompiler.cfg import Terminal
+from MicroCompiler.Productions import Productions
 
 
 def closure_operation(
@@ -28,6 +25,8 @@ def closure_operation(
             lookahead = first_set.get_first_set(lookahead_candidate)
 
             production_group = productions.get(next_symbol)
+            if production_group is None:
+                print("")
             for production_branch in production_group:
                 for first_set_item in lookahead:
                     new_lr_one_item = LR1Item(
@@ -45,31 +44,3 @@ def closure_operation(
             items = new_items
 
     return State(items)
-
-
-if __name__ == "__main__":
-    # Goal -> . SheepNoise , EOF
-    lr_1_item = {
-        LR1Item(
-            NonTerminal("Goal"), RightHandSide([NonTerminal("SheepNoise")], 0), EOF()
-        )
-    }
-
-    productions = Productions(
-        {
-            # Goal -> SheepNoise
-            NonTerminal("Goal"): [[NonTerminal("SheepNoise")]],
-            # SheepNoise -> SheepNoise baa
-            #             | baa
-            NonTerminal("SheepNoise"): [
-                [NonTerminal("SheepNoise"), Terminal("sound", "baa")],
-                [Terminal("sound", "baa")],
-            ],
-        }
-    )
-
-    first_set = FirstSet(productions)
-    first_set.compute()
-
-    closure_items = closure_operation(lr_1_item, productions, first_set)
-    print(closure_items)

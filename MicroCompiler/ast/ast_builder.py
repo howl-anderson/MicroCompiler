@@ -1,5 +1,5 @@
-from MicroCompiler.AST.ast_node import create_or_get_ast_node
-from MicroCompiler.AST.ast import AST
+from MicroCompiler.ast.ast_node import create_or_get_ast_node
+from MicroCompiler.ast.ast import AST
 
 
 def build_ast_from_call_stack(call_stack):

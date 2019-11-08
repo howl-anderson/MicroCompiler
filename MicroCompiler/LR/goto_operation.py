@@ -4,6 +4,7 @@ from typing import Set, Union, FrozenSet
 from MicroCompiler.LR.lr_one_item import LR1Item
 from MicroCompiler.LR.closure_operation import closure_operation
 from MicroCompiler.LR.rhs import RightHandSide
+from MicroCompiler.LR.state import State
 from MicroCompiler.Lookahead.EOF import EOF
 from MicroCompiler.Lookahead.FirstSet import FirstSet
 from MicroCompiler.Lookahead.NonTerminal import NonTerminal
@@ -12,11 +13,11 @@ from MicroCompiler.Productions import Productions
 
 
 def goto_operation(
-    state: FrozenSet[LR1Item],
+    state: State,
     symbol: Union[Terminal, NonTerminal],
     productions: Productions,
     first_set: FirstSet,
-) -> FrozenSet[LR1Item]:
+) -> State:
     new_items = set()
 
     filtered_state = list(

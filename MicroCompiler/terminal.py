@@ -1,7 +1,7 @@
-from MicroCompiler.Lookahead.symbol import Symbol
+# Used to replace MicroCompiler.Lookahead.Terminal.Terminal
 
 
-class NonTerminal(Symbol):
+class Terminal:
     def __init__(self, name):
         self.name = name
 
@@ -9,23 +9,21 @@ class NonTerminal(Symbol):
 
     @property
     def value(self):
-        return self.name
+        return str(self.name)
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return False
-        if self.name == other.name:
-            return True
-        return False
+        return self.name == other.name
 
     def __hash__(self):
         return hash(self.name)
 
     def __str__(self):
-        return self.name
+        return "'{}'".format(self.name)
 
     def __repr__(self):
-        return "{}('{}')".format(self.__class__.__name__, self.name)
+        return "{}({!r})".format(self.__class__.__name__, self.name)
 
     def __deepcopy__(self, memodict={}):
         return self.__class__(self.name)

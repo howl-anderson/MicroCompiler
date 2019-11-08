@@ -1,12 +1,12 @@
 eof-marker: <EOF>
 error-marker: --
 non-terminals:
-- Goal
-- TermTwo
-- Factor
-- Expr
-- ExprTwo
 - Term
+- ExprTwo
+- Factor
+- TermTwo
+- Goal
+- Expr
 productions:
   0:
     Goal:
@@ -26,8 +26,7 @@ productions:
     - Term
     - ExprTwo
   4:
-    ExprTwo:
-    - "\u03F5"
+    ExprTwo: []
   5:
     Term:
     - Factor
@@ -43,8 +42,7 @@ productions:
     - Factor
     - TermTwo
   8:
-    TermTwo:
-    - "\u03F5"
+    TermTwo: []
   9:
     Factor:
     - (
@@ -66,12 +64,12 @@ table:
     num: 1
   ExprTwo:
     (: --
-    ): --
+    ): 4
     '*': --
     +: 2
     '-': 3
     /: --
-    <EOF>: --
+    <EOF>: 4
     num: --
   Factor:
     (: 9
@@ -102,18 +100,18 @@ table:
     num: 5
   TermTwo:
     (: --
-    ): --
+    ): 8
     '*': 6
-    +: --
-    '-': --
+    +: 8
+    '-': 8
     /: 7
-    <EOF>: --
+    <EOF>: 8
     num: --
 terminals:
 - num
-- )
-- +
 - '-'
-- (
-- /
 - '*'
+- /
+- )
+- (
+- +

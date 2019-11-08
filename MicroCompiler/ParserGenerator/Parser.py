@@ -1,10 +1,9 @@
 from typing import List
 
-from MicroCompiler.Lookahead.NonTerminal import NonTerminal
-from MicroCompiler.Lookahead.Terminal import Terminal
-from MicroCompiler.Lookahead.Epsilon import Epsilon
-from MicroCompiler.Productions import Productions
-from MicroCompiler.Lookahead.EOF import EOF
+from MicroCompiler.cfg import NonTerminal
+from MicroCompiler.cfg import Terminal
+from MicroCompiler.cfg import Epsilon
+from MicroCompiler.cfg import Grammar
 from MicroCompiler.ParserGenerator.Lexeme import (
     NON_TERMINAL,
     TERMINAL,
@@ -179,8 +178,8 @@ class Parser:
                 production.append(self.token_list[save_point])
             return result
 
-    def generate_production(self) -> Productions:
-        formal_production = Productions()
+    def generate_production(self) -> Grammar:
+        formal_production = Grammar()
 
         for lhs_lexeme in self.production_dict:
             lhs_symbol = NonTerminal(lhs_lexeme.value)
@@ -201,7 +200,7 @@ class Parser:
                         production_symbols.append(NonTerminal(rhs_symbol.value))
                     elif rhs_symbol.type_ == TERMINAL:
                         production_symbols.append(
-                            Terminal(type_=None, data=rhs_symbol.value)
+                            Terminal(rhs_symbol.value)
                         )
 
         return formal_production

@@ -1,0 +1,2 @@
+class UserLevelLexerDefineError(Exception):
+    pass

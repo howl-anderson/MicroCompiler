@@ -1,4 +1,4 @@
-from MicroCompiler.Lookahead.symbol import Symbol
+from MicroCompiler.cfg.symbol import Symbol
 
 
 class NonTerminal(Symbol):
@@ -11,12 +11,14 @@ class NonTerminal(Symbol):
     def value(self):
         return self.name
 
+    def get_new_instance(self):
+        cls = self.__class__
+        return cls(self.name)
+
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return False
-        if self.name == other.name:
-            return True
-        return False
+        return self.name == other.name
 
     def __hash__(self):
         return hash(self.name)

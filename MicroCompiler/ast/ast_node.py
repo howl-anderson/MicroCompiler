@@ -26,6 +26,39 @@ class AstNode(object):
         )
 
 
+class AstNode_v2(object):
+    def __init__(self, name, data=None):
+        self.name = name
+        self.data = data  # point to raw input
+        self.parsed_data = None  # point to result returned by parser
+
+    def access(self, visitor_object):
+        func_name = visitor_object.get_method_name(self.name)
+        func = getattr(visitor_object, func_name)
+        return func(self)
+
+
+class NonTerminalAstNode_v2(AstNode_v2):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.sub_node_list = []
+
+    def add_sub_node(self, node):
+        self.sub_node_list.append(node)
+
+    def __repr__(self):
+        return "AstNode[{}#{}]".format(
+            self.name, self.data.index
+        )
+
+
+class TerminalAstNode_v2(AstNode_v2):
+    def __repr__(self):
+        return "AstNode[{}#{}]".format(
+            self.name, self.data.index
+        )
+
 class NonTerminalAstNode(AstNode):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

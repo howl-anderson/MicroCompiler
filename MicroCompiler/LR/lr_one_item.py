@@ -10,8 +10,10 @@ class LR1Item(object):
         self.rhs = rhs  # type: RightHandSide
         self.lookahead = lookahead
 
+        self.arrow_symbol = "⭢"
+
     def __str__(self):
-        return "[{} -> {}, {}]".format(self.lhs, self.rhs, self.lookahead)
+        return "[{} {} {}, {}]".format(self.lhs, self.arrow_symbol, self.rhs, self.lookahead)
 
     # def __repr__(self):
     #     return "{!s} -> {!s} , {!s}".format(self.lhs, self.rhs, self.lookahead)
@@ -40,13 +42,13 @@ class LR1Item(object):
 
 
 if __name__ == "__main__":
-    lr_1_item = LR1Item("S", RightHandSide(["S", "E"], mark_offset=1), "a")
+    lr_1_item = LR1Item("S", RightHandSide(["S", "E"], placeholder_offset=1), "a")
     lr_1_str = str(lr_1_item)
     print(lr_1_str)
 
     lr_1_repr = repr(lr_1_item)
     print(lr_1_repr)
 
-    new_lr_1_item = LR1Item("S", RightHandSide(["S", "E"], mark_offset=1), "a")
+    new_lr_1_item = LR1Item("S", RightHandSide(["S", "E"], placeholder_offset=1), "a")
 
     assert new_lr_1_item == lr_1_item
