@@ -1,4 +1,4 @@
-from demo.arithmetic_calculator_power_by_lr.arithmetic_calculator import ArithmeticCalculator
+from MicroCompiler.demo.arithmetic_calculator.lr.arithmetic_calculator import ArithmeticCalculator
 
 ac = ArithmeticCalculator()
 

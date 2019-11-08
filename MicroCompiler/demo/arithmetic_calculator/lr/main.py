@@ -7,7 +7,7 @@ from MicroCompiler.SkeletonParser import WhiteSpaceToken
 from MicroCompiler.lexer.lexer import Lexer
 from MicroRegEx.Token import Token
 from MicroCompiler.postfix_expression.evaluator import Evaluator
-from demo.arithmetic_calculator_power_by_lr.user_level_parser import Parser
+from MicroCompiler.demo.arithmetic_calculator.lr.user_level_parser import Parser
 
 user_level_parser = Parser()
 

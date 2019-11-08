@@ -1,4 +1,5 @@
 import operator
+import os
 
 from MicroCompiler.LR.lr_one_parser import LROneParser
 from MicroCompiler.parser_evaluator import ParserEvaluator_v2
@@ -7,7 +8,7 @@ from MicroCompiler.SkeletonParser import WhiteSpaceToken
 from MicroCompiler.lexer.lexer import Lexer
 from MicroCompiler.lexer.tokens.token import Token
 from MicroCompiler.postfix_expression.evaluator import Evaluator
-from demo.arithmetic_calculator_power_by_lr.user_level_parser import Parser
+from MicroCompiler.demo.arithmetic_calculator.lr.user_level_parser import Parser
 
 user_level_parser = Parser()
 
@@ -26,6 +27,10 @@ user_defined_lexer_rule = [
     ["white space", r" +", lambda x: WhiteSpaceToken(x)],
 ]
 
+current_dir = os.path.dirname(os.path.realpath(__file__))
+
+GRAMMAR_DEFINE_FILE = os.path.join(current_dir, "calculator.mbnf")
+
 
 class ArithmeticCalculator:
     def __init__(self):
@@ -40,7 +45,7 @@ class ArithmeticCalculator:
 
     @staticmethod
     def _init_lr_knowledge():
-        lr_one_parser_generator = LROneParserGenerator("calculator.mbnf")
+        lr_one_parser_generator = LROneParserGenerator(GRAMMAR_DEFINE_FILE)
         states, action_table, goto_table = lr_one_parser_generator.generate()
 
         return states, action_table, goto_table
