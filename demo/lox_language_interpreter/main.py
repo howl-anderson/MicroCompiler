@@ -1,4 +1,4 @@
-from demo.lox_language.lox_interpreter import lox_interpreter
+from demo.lox_language_interpreter.lox_interpreter import lox_interpreter
 from demo.arithmetic_calculator.user_level_parser import Parser
 from MicroCompiler.SkeletonParser import Token
 

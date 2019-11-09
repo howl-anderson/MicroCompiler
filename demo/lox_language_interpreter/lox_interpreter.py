@@ -1,5 +1,5 @@
 from MicroCompiler.SkeletonParser import SkeletonParser
-from demo.lox_language.visitor import Interpreter
+from demo.lox_language_interpreter.visitor import Interpreter
 from MicroCompiler.ast.ast_builder import build_ast_from_call_stack
 
 
