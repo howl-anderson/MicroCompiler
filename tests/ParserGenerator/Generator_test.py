@@ -1,6 +1,5 @@
-from MicroCompiler.Lookahead.NonTerminal import NonTerminal
-from MicroCompiler.Lookahead.Terminal import CHARACTER
-from MicroCompiler.Lookahead.Terminal import Terminal
+from MicroCompiler.cfg import NonTerminal
+from MicroCompiler.cfg import Terminal
 from MicroCompiler.ParserGenerator.Generator import Generator
 
 
@@ -10,15 +9,17 @@ def test_construct_simple(datadir):
 
     expect_result = {
         NonTerminal("statement"): {
-            Terminal(CHARACTER, "plus"): 0,
-            Terminal(CHARACTER, ";"): "--",
-            Terminal(CHARACTER, "minus"): 0,
+            Terminal("plus"): 0,
+            Terminal(";"): "--",
+            Terminal("minus"): 0,
         },
         NonTerminal("expression"): {
-            Terminal(CHARACTER, "plus"): 1,
-            Terminal(CHARACTER, ";"): "--",
-            Terminal(CHARACTER, "minus"): 2,
+            Terminal("plus"): 1,
+            Terminal(";"): "--",
+            Terminal("minus"): 2,
         },
     }
+
+    assert real_result == expect_result
 
     g.write_yaml("../output.yaml")

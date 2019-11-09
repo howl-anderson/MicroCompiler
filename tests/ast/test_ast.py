@@ -1,14 +1,6 @@
-from typing import Union
-
-from MicroCompiler.Lookahead.NonTerminal import NonTerminal
-from MicroCompiler.Lookahead.Terminal import Terminal
 from MicroCompiler.ast.ast import AST_v2
-
-
-NT = NonTerminal
-
-
-T = Terminal
+from MicroCompiler.cfg import NonTerminal
+from MicroCompiler.cfg import Terminal
 
 
 class Stack(list):
@@ -18,15 +10,15 @@ class Stack(list):
 def test_bottom_up_parser():
     ast = AST_v2()
 
-    num_0 = T(None, "num")
-    factor_1 = NT("Factor")
-    term_2 = NT("Term")
-    expr_3 = NT("Expr")
-    num_4 = T(None, "num")
-    factor_5 = NT("Factor")
-    term_6 = NT("Term")
-    plus_7 = T(None, "+")
-    expr_8 = NT("Expr")
+    num_0 = Terminal("num")
+    factor_1 = NonTerminal("Factor")
+    term_2 = NonTerminal("Term")
+    expr_3 = NonTerminal("Expr")
+    num_4 = Terminal("num")
+    factor_5 = NonTerminal("Factor")
+    term_6 = NonTerminal("Term")
+    plus_7 = Terminal("+")
+    expr_8 = NonTerminal("Expr")
 
     parser_build_action = [
         (factor_1, (num_0,)),

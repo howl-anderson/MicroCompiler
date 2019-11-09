@@ -1,11 +1,11 @@
 import copy
 
-from MicroCompiler.Productions import Productions
+from MicroCompiler.cfg import Grammar
 from MicroCompiler.Lookahead.SymbolSet import SymbolSet
 
 
 class FirstSet:
-    def __init__(self, production: Productions):
+    def __init__(self, production: Grammar):
         self.first_set = {}
         self.first_set_table = {}
         self.first_set_mapping = {}

@@ -4,9 +4,9 @@ from MicroCompiler.LR.rhs import RightHandSide
 from MicroCompiler.LR.state import State
 from MicroCompiler.Lookahead.EOF import EOF
 from MicroCompiler.Lookahead.FirstSet import FirstSet
-from MicroCompiler.Lookahead.NonTerminal import NonTerminal
-from MicroCompiler.Lookahead.Terminal import Terminal
-from MicroCompiler.Productions import Productions
+from MicroCompiler.cfg import NonTerminal
+from MicroCompiler.cfg import Terminal
+from MicroCompiler.cfg import Grammar
 
 
 def test_by_sheep_noise_language():
@@ -17,15 +17,15 @@ def test_by_sheep_noise_language():
         )
     }
 
-    productions = Productions(
+    productions = Grammar(
         {
             # Goal -> SheepNoise
             NonTerminal("Goal"): [[NonTerminal("SheepNoise")]],
             # SheepNoise -> SheepNoise baa
             #             | baa
             NonTerminal("SheepNoise"): [
-                [NonTerminal("SheepNoise"), Terminal("sound", "baa")],
-                [Terminal("sound", "baa")],
+                [NonTerminal("SheepNoise"), Terminal("baa")],
+                [Terminal("baa")],
             ],
         }
     )
@@ -45,26 +45,26 @@ def test_by_sheep_noise_language():
             #  [SheepNoise -> • SheepNoise baa, EOF]
             LR1Item(
                 NonTerminal("SheepNoise"),
-                RightHandSide([NonTerminal("SheepNoise"), Terminal("sound", "baa")], 0),
+                RightHandSide([NonTerminal("SheepNoise"), Terminal("baa")], 0),
                 lookahead=EOF(),
             ),
             #  [SheepNoise -> • baa, EOF]
             LR1Item(
                 NonTerminal("SheepNoise"),
-                RightHandSide([Terminal("sound", "baa")], 0),
+                RightHandSide([Terminal("baa")], 0),
                 lookahead=EOF(),
             ),
             #  [SheepNoise -> • SheepNoise baa, baa]
             LR1Item(
                 NonTerminal("SheepNoise"),
-                RightHandSide([NonTerminal("SheepNoise"), Terminal("sound", "baa")], 0),
-                lookahead=Terminal("sound", "baa"),
+                RightHandSide([NonTerminal("SheepNoise"), Terminal("baa")], 0),
+                lookahead=Terminal("baa"),
             ),
             #  [SheepNoise -> • baa, baa]
             LR1Item(
                 NonTerminal("SheepNoise"),
-                RightHandSide([Terminal("sound", "baa")], 0),
-                lookahead=Terminal("sound", "baa"),
+                RightHandSide([Terminal("baa")], 0),
+                lookahead=Terminal("baa"),
             ),
         ]
     )
