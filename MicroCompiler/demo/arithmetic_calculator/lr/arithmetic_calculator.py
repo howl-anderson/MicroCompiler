@@ -4,7 +4,7 @@ import os
 from MicroCompiler.LR.lr_one_parser import LROneParser
 from MicroCompiler.parser_evaluator import ParserEvaluator_v2
 from MicroCompiler.LR.lr_one_parser_generator import LROneParserGenerator
-from MicroCompiler.SkeletonParser import WhiteSpaceToken
+from MicroCompiler.lexer.tokens import WhiteSpaceToken
 from MicroCompiler.lexer.lexer import Lexer
 from MicroCompiler.lexer.tokens.token import Token
 from MicroCompiler.postfix_expression.evaluator import Evaluator

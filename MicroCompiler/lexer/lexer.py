@@ -3,7 +3,7 @@ from typing import List, Tuple, Union
 import MicroRegEx
 from MicroCompiler.Lookahead import Terminal
 from MicroCompiler.Lookahead.EOF import EOF
-from MicroCompiler.SkeletonParser import WhiteSpaceToken
+from MicroCompiler.lexer.tokens import WhiteSpaceToken
 from MicroCompiler.lexer.exceptions import UserLevelLexerDefineError
 from MicroCompiler.lexer.tokens import Token
 

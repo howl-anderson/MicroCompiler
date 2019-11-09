@@ -3,7 +3,7 @@ import operator
 from MicroCompiler.LR.lr_one_parser import LROneParser
 from MicroCompiler.parser_evaluator import ParserEvaluator_v2
 from MicroCompiler.LR.lr_one_parser_generator import LROneParserGenerator
-from MicroCompiler.SkeletonParser import WhiteSpaceToken
+from MicroCompiler.lexer.tokens.white_space_token import WhiteSpaceToken
 from MicroCompiler.lexer.lexer import Lexer
 from MicroRegEx.Token import Token
 from MicroCompiler.postfix_expression.evaluator import Evaluator
