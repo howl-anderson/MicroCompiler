@@ -5,5 +5,5 @@ TermPlus -> Term TermPlus
           | ϵ ;
 Term -> 'const'
       | Block ;
-Block -> Var ;
-Var -> '{{' 'var' '}}' ;
+Block -> VarBlock ;
+VarBlock -> '{{' 'var' '}}' ;
