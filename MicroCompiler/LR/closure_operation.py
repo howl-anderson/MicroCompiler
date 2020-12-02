@@ -4,7 +4,7 @@ from typing import Set
 from MicroCompiler.LR.lr_one_item import LR1Item
 from MicroCompiler.LR.rhs import RightHandSide
 from MicroCompiler.LR.state import State
-from MicroCompiler.cfg import Terminal
+from MicroCompiler.cfg import Terminal, Epsilon
 from MicroCompiler.Productions import Productions
 
 
@@ -29,6 +29,10 @@ def closure_operation(
                 print("")
             for production_branch in production_group:
                 for first_set_item in lookahead:
+                    # TODO: real works?
+                    if isinstance(first_set_item, Epsilon):
+                        continue
+
                     new_lr_one_item = LR1Item(
                         lhs=next_symbol,
                         rhs=RightHandSide(production_branch, 0),

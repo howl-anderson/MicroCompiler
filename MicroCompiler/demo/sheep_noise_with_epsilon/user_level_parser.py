@@ -43,8 +43,8 @@ class Parser(clazz):
         return 1
 
     def SheepNoise(self, input_) -> int:
-        if len(input_) == 0:  # SheepNoise ->  ϵ
-            return 0
+        if len(input_) == 1:  # SheepNoise ->  'baa'
+            return input_[0]
 
         if len(input_) == 2:  # SheepNoise -> SheepNoise 'baa'
             return input_[0] + input_[1]

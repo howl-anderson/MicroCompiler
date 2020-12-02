@@ -23,11 +23,14 @@ class Productions(dict):
             raise ValueError("start symbol must in production.")
         self.start_symbol = start_symbol
 
-    def get_all_elements(self, without_start_symbol=True):
-        if not without_start_symbol:
-            return self._elements
-        else:
-            return self._elements - {self.start_symbol, }
+    def get_all_elements(self, without_start_symbol=True, without_epsilon=True):
+        exclude_symbol = set()
+        if without_start_symbol:
+            exclude_symbol.add(self.start_symbol)
+        if without_epsilon:
+            exclude_symbol.add(self.epsilon)
+
+        return self._elements - exclude_symbol
 
     def get_all_non_terminals(self, without_start_symbol=True):
         if not without_start_symbol:

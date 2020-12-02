@@ -19,7 +19,7 @@ class RightHandSide(object):
         self.placeholder_offset = placeholder_offset  # AKA the . offset
         self.placeholder_symbol = "•"
 
-    def get_symbol_around_mark(self, offset=1):
+    def get_symbol_around_mark(self, offset=1) -> Union[None, NonTerminal, Terminal]:
         index_offset = offset - 1 if offset > 0 else offset
         offset = self.placeholder_offset + index_offset
 

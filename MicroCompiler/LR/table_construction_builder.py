@@ -7,7 +7,7 @@ from MicroCompiler.LR.rhs import RightHandSide
 from MicroCompiler.LR.state import State
 from MicroCompiler.Lookahead.EOF import EOF
 from MicroCompiler.Lookahead.FirstSet import FirstSet
-from MicroCompiler.cfg import NonTerminal
+from MicroCompiler.cfg import NonTerminal, Epsilon
 from MicroCompiler.cfg import Terminal
 from MicroCompiler.Productions import Productions
 
@@ -26,6 +26,9 @@ class ActionTable(dict):
         condition: Tuple[State, Union[NonTerminal, Terminal, EOF]],
         action: "ParserAction",
     ):
+        if isinstance(condition[1], Epsilon):
+            print("")
+
         if condition not in self:
             self[condition] = action
         else:
@@ -36,13 +39,22 @@ class ActionTable(dict):
                 return
 
             if isinstance(action, Shift) and isinstance(existed_action, Reduce):
-                raise ShiftReduceConflict()
+                raise ShiftReduceConflict(str(action), str(existed_action), str(condition))
             elif isinstance(action, Reduce) and isinstance(existed_action, Shift):
-                raise ShiftReduceConflict()
+                raise ShiftReduceConflict(str(action), str(existed_action), str(condition))
             elif isinstance(action, Reduce) and isinstance(existed_action, Reduce):
-                raise ReduceReduceConflict()
+                raise ReduceReduceConflict(str(action), str(existed_action), str(condition))
             else:
                 raise ValueError()
+
+    def filter_by_state(self, state):
+        filtered_state = dict()
+        for k, v in self.items():
+            s, t = k
+            if s == state:
+                filtered_state[k] = v
+
+        return filtered_state
 
 
 class ParserAction(object):
@@ -60,6 +72,9 @@ class Shift(ParserAction):
         return "{!s}({!r})".format(self.__class__.__name__, self.next_state)
 
     def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+
         return self.next_state == other.next_state
 
 
@@ -96,6 +111,11 @@ def table_construction_builder(states: Set[State], productions, first_set, end_p
             elif item == end_point:
                 action_table.add_action((state, EOF()), Accept())
             elif item.rhs.is_mark_at_end():
+                # # SomeNonTerminal -> Epsilon is special case
+                # if len(item.rhs) == 0:
+                #     # skip this item
+                #     continue
+
                 action_table.add_action(
                     (state, item.lookahead), Reduce(item.lhs, item.rhs)
                 )

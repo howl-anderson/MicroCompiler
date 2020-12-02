@@ -43,10 +43,10 @@ def match_token(
 
                     token_object = action(matched_str)
 
-                    if not isinstance(token_object, Token):
+                    if not isinstance(token_object, (Token, WhiteSpaceToken)):
                         raise UserLevelLexerDefineError(
-                            "Expected return type of {!r} but get {!r}.".format(
-                                Token, token_object.__class__
+                            "Expected return type of {!r} or {!r} but get {!r}.".format(
+                                Token, WhiteSpaceToken, token_object.__class__
                             )
                         )
 

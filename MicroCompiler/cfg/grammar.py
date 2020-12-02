@@ -1,9 +1,19 @@
+import os
 from typing import List, Mapping, Union
+
+from jinja2 import Environment
+from jinja2 import FileSystemLoader
 
 from MicroCompiler.cfg.terminal import Terminal
 from MicroCompiler.cfg.epsilon import Epsilon
 from MicroCompiler.cfg.non_terminal import NonTerminal
 from MicroCompiler.Lookahead.EOF import EOF
+
+current_path = os.path.dirname(os.path.realpath(__file__))
+template_dir = os.path.join(current_path, 'templates')
+
+jinja2_env = Environment(loader=FileSystemLoader(template_dir),
+                         trim_blocks=False)
 
 
 class Grammar(dict):
@@ -56,8 +66,25 @@ class Grammar(dict):
         self.compute_elements()
         return {i for i in self._non_terminals}
 
-    def print_as_bnf(self):
+    def _generate_production_mbnf(self, lhs_symbol) -> str:
+        rhs = self[lhs_symbol]
+
+        template = jinja2_env.get_template('grammar.jinja2')
+        result = template.render(lhs=lhs_symbol, rhs=rhs)
+        return result
+
+    def render_as_mbnf(self) -> str:
+        output_list = []
         for lhs_symbol in self:
+            result = self._generate_production_mbnf(lhs_symbol)
+            output_list.append(result)
+
+        return "\n".join(output_list)
+
+    def print_as_bnf(self):
+        production_str_list = []
+        for lhs_symbol in self:
+            production_str = ""
             print(lhs_symbol, " ->")
             rhs_symbol = self[lhs_symbol]
             production_str_list = []
@@ -65,3 +92,9 @@ class Grammar(dict):
                 production_str_list.append(" ".join([str(i) for i in production]))
             print("    ", " | ".join(production_str_list))
             print(";")
+
+    def write_to_file(self, grammar_file):
+        mbnf_string = self.render_as_mbnf()
+        with open(grammar_file, 'wt') as fd:
+            fd.write(mbnf_string)
+

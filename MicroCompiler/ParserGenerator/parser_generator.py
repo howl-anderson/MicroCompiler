@@ -1,5 +1,6 @@
 from MicroCompiler.ParserGenerator.Lexer import Lexer
 from MicroCompiler.ParserGenerator.Parser import Parser
+from MicroCompiler.cfg import Grammar
 
 
 class ParserGenerator:
@@ -13,7 +14,7 @@ class ParserGenerator:
         with open(input_file) as fd:
             self.bnf_string = fd.read()
 
-    def generate(self):
+    def generate(self) -> Grammar:
         lexer = Lexer()
         lexer.parse(self.bnf_string)
 

@@ -11,6 +11,7 @@ from MicroCompiler.Lookahead.FirstSet import FirstSet
 from MicroCompiler.Lookahead.NonTerminal import NonTerminal
 from MicroCompiler.Lookahead.Terminal import Terminal
 from MicroCompiler.Productions import Productions
+from micro_toolkit.cache.cache_me import cache_me
 
 goto_table = {}
 
@@ -28,6 +29,7 @@ def record(
     goto_table[(src, on)] = dst
 
 
+# @cache_me()
 def canonical_collection_builder(
     start_point: Set[LR1Item], productions: Productions, first_set: FirstSet
 ) -> StateSet:

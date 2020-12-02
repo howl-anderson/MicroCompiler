@@ -1,0 +1,4 @@
+{{ lhs }} ->{% for symbol in rhs[0] %} {{ symbol }}{% endfor %}{% if rhs|count == 1 %} ;{% endif %}
+{% for index in range(1, rhs|count) -%}
+{% for _ in range(lhs.name|count) %} {% endfor %}  |{% for symbol in rhs[index] %} {{ symbol }}{% endfor %}{% if index == rhs|count - 1 %} ;{% endif %}
+{% endfor -%}
