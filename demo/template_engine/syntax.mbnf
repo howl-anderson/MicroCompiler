@@ -1,0 +1,9 @@
+Goal -> Expr ;
+Expr -> Term TermPlus
+      | ϵ ;
+TermPlus -> Term TermPlus
+          | ϵ ;
+Term -> 'const'
+      | Block ;
+Block -> Var ;
+Var -> '{{' 'var' '}}' ;
