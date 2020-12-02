@@ -8,4 +8,18 @@
 
 ## 使用示例
 
+```python
+from demo.template_engine.render_with_string import render_with_string
+
+result = render_with_string("HELLO,{{ name }}", {"name": "Xiaoquan"})
+print(result)
+```
+
+输出
+
+```text
+HELLO,Xiaoquan
+```
+
+## 测试
 见 `render_with_string.py` 和 `render_with_tokens.py`
