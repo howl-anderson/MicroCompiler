@@ -44,7 +44,13 @@ MBNF 是 Micro Backus Normal Form 的缩写，是为了配合本项目的编译�
 对于返回后缀表达式（逆波兰表达式）的用户自定类来说，用户可以选择使用 `MicroCompiler.postfix_expression.evaluator.Evaluator` 提供的功能，完成后缀表达式的求值工作。
 
 # 演示
-为了更好的验证和演示如何使用该项目，这里提供了一个能够求解四则运算（`+`、`-`、`*`、`、`、`（`、`）`）的算术表达式语言的解析器。项目位于 [demo/arithmetic_calculator](demo/arithmetic_calculator), 内含详细的说明文档。
+为了更好的验证和演示如何使用该项目，这里提供了几个示例
+
+## 算术计算器
+求解四则运算（`+`、`-`、`*`、`、`、`（`、`）`）的算术表达式语言的解析器。项目位于 [demo/arithmetic_calculator](demo/arithmetic_calculator), 内含详细的说明文档。
+
+## 模板引擎
+简单的模板渲染引擎，可以渲染诸如 `HELLO,{{ name }}` 的模板。项目位于 [demo/template_engine](demo/template_engine), 内含详细的说明文档。
 
 # Acknowledge & Credits
 http://hackingoff.com/compilers
